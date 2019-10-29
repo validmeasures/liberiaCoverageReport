@@ -1,7 +1,7 @@
 ---
 title: \vspace{3.5in}Report on Coverage Assessment of Direct Nutrition Interventions in Liberia
 author: "Valid International"
-date: "29 October 2018"
+date: '`r format(Sys.Date(), "%d %B %Y")`'
 fontsize: 12pt
 geometry: margin=2cm
 documentclass: article
@@ -373,7 +373,7 @@ kable(x = xy,
 
 The majority of mothers from the sample for Monrovia and Grand Bassa have attended ANC during their last pregnancy, are aware of IFA tablets, have received IFA tablets and have consumed IFA tablets.
 
-Of the few who have not received IFA tablets despite attending ANC during their last pregnancy, the main reasons for not getting IFA tablets are shown in \@ref(fig:ifa3a)
+Of the few who have not received IFA tablets despite attending ANC during their last pregnancy, the main reasons for not getting IFA tablets are shown in Figure \@ref(fig:ifa3a)
 
 ```{r ifa3a, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving/purchasing iron-folic acid tablets", out.height = "6cm", out.width = "8cm", fig.align = "center", fig.show = "hold", fig.pos = "H", fig.retina = 1}
 ifaCount <- read.csv("data/ifaCount.csv")
@@ -424,7 +424,7 @@ ggplot(data = y, aes(x = indicator, y = count)) +
 
 However, coverage of IFA falters significantly when length of IFA tablet consumption is assessed. Only 33% and 42% of mothers in Monrovia and Grand Bassa respectively have consumed IFA tablets for at least 90 days during their last pregnancy.
 
-On further analysis of the length of IFA tablet consumption, most mothers in both Monrovia and Grand Bassa have consumed IFA tablets for less than 60 months as shown in Figure \@fig:ifa5). Median number of days of IFA tablet consumption (shown by dotted lines in Figure \@ref(fig:ifa5)) is 56 and 52 days for Monrovia and Grand Bassa respectively.
+On further analysis of the length of IFA tablet consumption, most mothers in both Monrovia and Grand Bassa have consumed IFA tablets for less than 60 months as shown in Figure \@ref(fig:ifa5). Median number of days of IFA tablet consumption (shown by dotted lines in Figure \@ref(fig:ifa5)) is 56 and 52 days for Monrovia and Grand Bassa respectively.
 
 ```{r ifa5, echo = FALSE, eval = TRUE, fig.cap = "Number of days mothers took IFA tablets during their last pregnancy", fig.width = 8, fig.height = 4, fig.align = "center", fig.pos = "H", fig.retina = 1}
 ifaBoot <- read.csv("data/ifaBoot.csv")
