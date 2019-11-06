@@ -1,0 +1,1804 @@
+---
+title: \vspace{3.5in}Report on Coverage Assessment of Direct Nutrition Interventions in Liberia
+author: "Valid International"
+date: '`r format(Sys.Date(), "%d %B %Y")`'
+fontsize: 12pt
+geometry: margin=2cm
+documentclass: article
+classoption: a4paper
+bibliography: bibliography.bib
+lot: TRUE
+lof: TRUE
+link-citations: TRUE
+links-as-notes: FALSE
+colorlinks: TRUE
+linkcolor: blue
+citecolor: blue
+urlcolor: blue
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+
+if(!require(stringr)) install.packages("stringr")
+if(!require(raster)) install.packages("raster")
+if(!require(bbw)) install.packages("bbw")
+if(!require(tidyr)) install.packages("tidyr")
+if(!require(ggplot2)) install.packages("ggplot2")
+if(!require(knitr)) install.packages("knitr")
+if(!require(kableExtra)) install.packages("kableExtra")
+if(!require(RColorBrewer)) install.packages("RColorBrewer")
+if(!require(rgdal)) install.packages("rgdal")
+if(!require(cowplot)) install.packages("cowplot")
+
+if(!require(remotes)) install.packages("remotes")
+if(!require(liberia)) install_github("validmeasures/liberia")
+if(!require(liberiaData)) install_github("validmeasures/liberiaData")
+
+options(stringsAsFactors = FALSE)
+
+themeSettings <- theme_bw() + 
+  theme(
+    panel.border = element_rect(size = 0.5, colour = "#85010C"),
+    panel.grid.major = element_line(linetype = 1, 
+                                    size = 0.2, 
+                                    colour = "gray90"),
+    panel.grid.minor = element_blank(),
+    strip.background = element_blank(),
+    strip.text = element_text(colour = "#247BA0", size = 15, hjust = 0),
+    legend.key = element_rect(linetype = 0),
+    axis.line.x = element_line(size = 1, colour = "#85010C"),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    axis.ticks = element_line(colour = "#85010C", size = 0.5)
+  )
+
+map.palette <- colorRampPalette(colors = brewer.pal(n = 7, name = "RdYlGn"), 
+                                space = "Lab")
+
+ifaBaseGM    <- readOGR(dsn = "data/ifaPolyGM", layer = "ifaPolyGM")
+icfBaseGM    <- readOGR(dsn = "data/icfPolyGM", layer = "icfPolyGM")
+mnpBaseGM    <- readOGR(dsn = "data/mnpPolyGM", layer = "mnpPolyGM")
+vitBaseGM    <- readOGR(dsn = "data/vitPolyGM", layer = "vitPolyGM")
+screenBaseGM <- readOGR(dsn = "data/screenPolyGM", layer = "screenPolyGM")
+cmamBaseGM   <- readOGR(dsn = "data/coveragePolyGM", layer = "coveragePolyGM")
+nutBaseGM    <- readOGR(dsn = "data/nutPolyGM", layer = "nutPolyGM")
+
+ifaBaseGB    <- readOGR(dsn = "data/ifaPolyGB", layer = "ifaPolyGB")
+icfBaseGB    <- readOGR(dsn = "data/icfPolyGB", layer = "icfPolyGB")
+mnpBaseGB    <- readOGR(dsn = "data/mnpPolyGB", layer = "mnpPolyGB")
+vitBaseGB    <- readOGR(dsn = "data/vitPolyGB", layer = "vitPolyGB")
+screenBaseGB <- readOGR(dsn = "data/screenPolyGB", layer = "screenPolyGB")
+cmamBaseGB   <- readOGR(dsn = "data/coveragePolyGB", layer = "coveragePolyGB")
+nutBaseGB    <- readOGR(dsn = "data/nutPolyGB", layer = "nutPolyGB")
+
+gmCovHex <- gmHexGrid
+gmCovHex@data <- data.frame(gmCovHex@data, 
+                            ifaInt[[1]], iycfInt[[1]], mnpInt[[1]], 
+                            vitInt[[1]], screenInt[[1]], cmamInt[[1]], 
+                            anthroInt[[1]])
+
+gbCovHex <- gbHexGrid
+gbCovHex@data <- data.frame(gbCovHex@data, 
+                            ifaInt[[2]], iycfInt[[2]], mnpInt[[2]], 
+                            vitInt[[2]], screenInt[[2]], cmamInt[[2]], 
+                            anthroInt[[2]])
+```
+
+\newpage
+
+# Acknowledgements {-}
+
+\newpage
+
+# Acronyms and abbreviations {-}
+
+```{r acronyms, echo = FALSE, eval = TRUE}
+acronyms <- c("ANC", "CMAM", "DHS", "GAM", "IDW", "IFA", "IU", "IYCF", "MAM", "MICS", "MNP", "MUAC", "ODK", "PoN", "PSU", "SAM", "SMART", "UNICEF")
+
+definitions <- c("Antenatal care",
+                 "Community-based management of acute malnutrition",
+                 "Demographic and health surveys",
+                 "Global acute malnutrition",
+                 "Inverse distance weighting",
+                 "Iron-folic acid",
+                 "International units",
+                 "Infant and young child feeding",
+                 "Moderate acute malnutrition",
+                 "Multiple indicator cluster survey",
+                 "Micronutrient powder",
+                 "Middle upper arm circumference",
+                 "Open data kit",
+                 "Power of Nutrition",
+                 "Primary sampling unit",
+                 "Severe acute malnutrition",
+                 "Standardized Monitoring and Assessment of Relief and Transitions",
+                 "United Nations Children's Fund")
+
+tab <- data.frame(acronyms, definitions)
+
+kable(x = tab,
+      booktabs = TRUE,
+      caption = NULL,
+      row.names = FALSE,
+      col.names = c("Acronyms/Abbreviations", "Definition"),
+      escape = TRUE,
+      longtable = TRUE,
+      format = "latex") %>%
+  row_spec(row = 0, bold = TRUE)
+```
+
+\newpage
+
+# Executive Summary {-}
+
+
+\newpage
+
+# Introduction {#intro}
+
+A three-year nutrition programme is currently being implemented in Liberia by UNICEF aimed at tackling child undernutrition in the country. Funded by [Power of Nutrition](http://www.powerofnutrition.org) and [UNICEF UK](https://www.unicef.org.uk), the programme is being implemented across 15 counties in Liberia starting from January 2017 up to December 2019. The overall aim of the programme is to improve the coverage of direct nutrition interventions or what is commonly termed nutrition-specific interventions, i.e. interventions or programmes that address the immediate determinants of foetal and child nutrition and development—adequate food and nutrient intake, feeding, caregiving and parenting practices, and low burden of infectious diseases [@Bhutta:2013ks, @Ruel:2013kr]. The current programme supports the following specific key interventions: 1) *treatment of severe acute malnutrition (SAM) for children 6-59 months*; 2) *vitamin A supplementation for children 6-59 months*; 3) *promotion of appropriate infant and young child feeding (IYCF) practices among pregnant or lactating women*; 4) *multiple micronutrient powder (MNP) supplementation for children 6-23 months*; and, 5) *iron and folic acid (IFA) supplementation for pregnant women*.
+
+To assess the programme's progress towards its overall aim, two coverage assessments have been implemented - the first at the halfway point of the programme and the second at the end. Only two programme areas were selected for the assessments: *Urban Montserrado (Greater Monrovia)* district and *Grand Bassa* county. This report presents the results of these assessments.
+
+# Methods {#methods}
+
+## Survey and sampling design {#sample-design}
+
+The coverage assessment was designed to be spatially representative of each of the two programme areas using a two-stage spatial sampling survey approach. An even spatial distribution of primary sampling units (PSUs) (i.e., villages/city blocks) was selected from across each enumeration area. This approach was used in order to assess coverage and its spatial distribution in order to detect and map heterogeneity of coverage [@Elliott:2004cg, @Diggle:2014tk]. PSUs were selected based on their proximity to centroids of a hexagonal grid laid over the two selected programme areas resulting in a triangular irregular network [@Isaaks:1989uk, @Elliot:2000vs]. A complete enumeration of children 6-59 months old from $m = 30$ PSUs per programme area was performed in order to find all children who are SAM using mid-upper arm circumference (MUAC)[^1] and bipedal oedema for the CMAM programme coverage assessment Within this cohort of children 6-59 months, a systematic sample of children and their mothers were selected for the coverage assessment of the other four nutrition-specific interventions. A total of $n = 192$ children 6-23 months old for the MNP supplementation coverage, children 6-59 months for vitamin A supplementation coverage and mothers of children 6-59 months for the IYCF counselling coverage and IFA coverage were systematically selected.
+
+## Indicators
+
+The coverage assessment evaluated the following indicators.
+
+### CMAM coverage
+
+CMAM coverage usually pertains to coverage of SAM treatment. Historically, there have been two coverage estimators in common use: **point** and **period** coverage. 
+
+Point coverage is the number of current SAM cases in a treatment programme divided by the total number of current SAM cases. 
+
+**Point coverage** uses data for current cases only. It is calculated using the following formula:
+
+$nbsp;
+
+$$\begin{aligned} 
+\text{Point coverage} & ~ = ~ \frac{C_{in}}{C_{in} ~ + ~ C_{out}} \\
+\\
+where: & \\
+\\
+C_{in} & ~ = ~ \text{current SAM cases in the programme} \\
+C_{out} & ~ = ~ \text{current SAM cases out of the programme}
+\end{aligned}$$
+
+&nbsp;
+
+**Point coverage** provides a snapshot of programme performance, putting a strong emphasis on the effectiveness and timeliness of case-finding and recruitment [@Myatt:2012tt]. 
+
+**Period coverage**, on the other hand, uses data for both current and recovering cases. It is calculated using the following formula:
+
+&nbsp;
+
+$$\begin{aligned}
+\text{Period coverage} & ~ = ~ \frac{C_{in} ~ + ~ R_{in}}{C_{in} ~ + ~ C_{out} ~ + ~ R_{in}} \\
+\\
+where: & \\
+\\
+R_{in} & ~ = ~ \text{recovering SAM cases in the programme}
+\end{aligned}$$
+
+&nbsp;
+
+**Period coverage** is the number of current and recovering cases in a treatment programme divided by all current SAM cases and recovering cases. It approximates treatment coverage much better (albeit with limitations) as it accounts for children who are no longer cases but are in the programme. 
+
+However, given the known limitations of point and period coverage [@Myatt:2012tt], the single coverage estimator proposed and recommended by @Balegamire:2015ud was used as the CMAM programme coverage estimator. Also, given the single coverage estimator, we adopted a shift in terminology that is more descriptive and specific with regard to what the estimator is actually measuring, allowing both measures to be reported together without confusion. **Point coverage** was termed *case-finding effectiveness* to more precisely reflect it as a measure of the programme’s ability to find and recruit current cases. This indicator assesses how good the treatment programme is in finding cases of SAM and then getting them to treatment. **Period coverage** that has been improved into the single coverage metric was named *treatment coverage* as this is the estimator that approximates this coverage indicator the closest.
+
+### Vitamin A supplementation
+
+The standard estimator for vitamin A supplementation is the proportion of children aged 6-59 months who received two age-appropriate doses of vitamin A in the past 12 months.
+
+In standard surveys such as the DHS and MICS, this indicator is adjusted to a recall of 6 months for a single age-appropriate dose of vitamin A.
+
+Age appropriate vitamin A supplementation was assessed mainly through mother's recall of which gel capsule the child received recently. The blue vitamin A gel capsule containing 100,000 IU of vitamin A is given to children 6-11 months. The red vitamin A gel capsule containing 200,000 IU of vitamin A is given to children 12 - 59 months. A photo of the blue and the red gel capsule was used to aid the mother/caregiver in answering this question.
+
+Given this, two indicators were assessed on vitamin A supplementation.
+
+1. Any vitamin A supplementation in the past 6 months.
+
+2. Age-appropriate vitamin A supplementation in the past 6 months.
+
+### Iron-folic acid (IFA) supplementation for pregnant women
+
+Population-based surveys typically report the percentage of women with a live birth in the two to five years before the survey who received and took IFA supplementation during their most recent pregnancy. Because antenatal care (ANC) is typically the main platform for IFA supplement distribution for pregnant women, survey questions on antenatal care attendance was used to provide information on the use of this platform to deliver IFA supplementation. @Sununtnasuk:2015kb propose a falter point framework[^2] that utilises four indicators that proxy the five critical points at which the ANC approach to IFA distribution might falter in IFA supplementation coverage to pregnant women. These indicators are:
+
+1. At least one ANC visit during most recent pregnancy
+
+2. Knowledge of IFA tablet/s
+
+3. Receipt or purchase of IFA tablet/s
+
+4. IFA consumption
+
+5. Adherence to at least 90 days of supplementation
+
+### Micronutrient powder supplementation
+
+The indicator for coverage of micronutrient powder supplementation is the proportion of children aged 6-23 months who consume micronutrient powder supplements. An indicator set on MNP supplementation was devised similar to the IFA supplementation falter point or bottleneck framework that first assessed knowledge and awareness of MNP supplementation, then the receipt/purchase of MNP and finally consumption of MNP.
+
+### IYCF counselling
+
+There are no standard indicators for IYCF counselling hence indicators were devised based on how this intervention was being delivered to pregnant or lactating women. In terms of mechanism, these sessions are delivered via the health clinic/health post and that the target beneficiaries are pregnant or lactating women. Given this, similar approach to the IFA supplementation coverage of falter points/bottle necks was used with the following indicators:
+
+1. At least one ANC visit during most recent pregnancy
+
+2. Awareness of IYCF counselling
+
+3. Attendance at IYCF counselling
+
+\newpage
+
+## Survey instrument
+
+The following are sample/template questionnaires used for the two types of surveys that will be implemented.
+
+### CMAM coverage survey instruments
+
+The CMAM coverage surveys primarily used two forms. The first form was used to collect coverage data from SAM children found during the survey. Given that this survey used house-to-house/door-to-door sampling for stage 2, then it was necessary to record all data from all children that were measured with MUAC and oedema. The following tabular form was used for this purpose:
+
+```{r samform, echo = FALSE, fig.cap = "SAM coverage survey sample/template form", out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
+knitr::include_graphics("forms/samForm.png")
+```
+
+The data collected using the tabular forms allows for estimation of coverage. They do not, however, allow one to know the reasons for coverage failure. To collect this data we applied a “barriers” questionnaire to the mothers/carers of uncovered SAM cases. Here is an example of a barriers questionnaire:
+
+\newpage
+
+```{r sambarriers, echo = FALSE, fig.cap = "SAM coverage barriers survey sample/template form", out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
+knitr::include_graphics("forms/samBarriersForm.png")
+```
+
+\newpage
+
+### Survey for children 6-59 months and their mothers
+
+For the survey for children 6-59 months, following is a sample/template questionnaire used. 
+
+```{r childform1, echo = FALSE, fig.cap = "Children 6-59 months old and their mothers survey sample/template form", out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
+knitr::include_graphics("forms/childForm1.png")
+knitr::include_graphics("forms/childForm2.png")
+knitr::include_graphics("forms/childForm3.png")
+knitr::include_graphics("forms/childForm4.png")
+```
+
+### Using Open Data Kit
+
+Based on the template forms described above, a digital data collection system using Open Data Kit (ODK) was developed. These forms are available as a [Github repository](https://github.com/validmeasures/liberiaS3Mforms). The system is composed of two forms.
+
+#### Village form
+
+This form (`liberiaCoverageVillageForm.xlsx` and `liberiaCoverageVillageForm.xml`) collected information on the villages or primary sampling units (PSU) selected for the Liberia Coverage Survey. This information includes:
+
+1. County name (and identifier)
+
+2. Village name (and identifier)
+
+3. Village population size 
+
+4. Village geocoordinates
+
+#### Coverage form
+
+This form (`liberiaCoverage.xlsx` and `liberiaCoverage.xml`) collected information on the various coverage indicators assessed in the Liberia Coverage Survey:
+
+1. CMAM coverage
+
+2. Iron-folic acid supplementation coverage
+
+3. IYCF counselling coverage
+
+4. Micronutrient powder supplementation coverage
+
+5. Vitamin A supplementation coverage
+
+The coverage form was developed in such a way that it implements the survey as per survey design such that the modules for IFA coverage, IYCF counselling coverage, MNP supplementation coverage and vitamin A supplementation coverage are only shown based on the sampling interval for a particular primary sampling unit (PSU) and based on the different eligibility requirements for each coverage survey module.
+
+## Data analyses
+
+Data analysis was performed using R language for statistical computing [@R:2018].
+
+### Analytical approach for estimating coverage indicators
+
+Data analysis procedures accounted for the sample design.
+
+* This survey is a two-stage sample. Subjects are sampled from a small number of primary sampling units (PSUs).
+
+* This survey is **not** prior weighted. This means that per-PSU sampling weights will be needed. These are usually the populations of the PSU.
+
+For this survey, the *blocked weighted bootstrap* estimation approach was used:
+
+* **Blocked** : The block corresponds to the PSU or cluster.
+
+* **Weighted** : The sampling procedure for this survey does not use population proportional sampling to weight the sample prior to data collection as is done with SMART type surveys. This means that a posterior weighting procedure is required. The “roulette wheel” algorithm to weight (i.e. by population) the selection probability of PSUs in bootstrap replicates will be utilised.
+
+A total of `m` PSUs are sampled *with-replacement* from the survey dataset where `m` is the number of PSUs in the survey sample. Individual records within each PSU are then sampled *with-replacement*. A total of n' records are sampled *with-replacement* from each of the selected PSUs where `n` is the number of individual records in a selected PSU. The resulting collection of records replicates the original survey in terms of both sample design and sample size. A large number of replicate surveys are taken (minimum of $r = 399$ replicate surveys but this can be changed). The required statistic (e.g. the mean of an indicator value) is applied to each replicate survey. The reported estimate consists of the 50th (point estimate), 2.5th (lower 95% confidence limit), and the 97.5th (upper 95% confidence limit) percentiles of the distribution of the statistic observed across all replicate surveys. The blocked weighted bootstrap procedure is outlined in Figure \@ref(fig:indicators31).
+
+The principal advantages of using a bootstrap estimator are:
+
+* Bootstrap estimators work well with small sample sizes.
+
+* The method is *non-parametric* and uses empirical rather than theoretical distributions. There are no assumptions of things like normality to worry about.
+
+* The method allows estimation of the sampling distribution of almost any statistic using only simple computational methods.
+
+### Analytical approach for mapping coverage indicators
+
+The indicator mapping will create a surface map of indicator values using spatial interpolation. There are various approaches and methods of spatial interpolation, the main differences are determined by the weights applied to the point dataset to estimate values at each of the unknown points of the surface map. For the Liberia coverage survey, spatial interpolation will be performed using the inverse distance weighting (IDW) method. As the name implies, the IDW method uses weights that are inversely proportional to the distance of a point being estimated from the sampling point locations [@isaaks1989applied; @diggle2007mbg; @diggle2013statistical]. This can be mathematically demonstrated as follows:
+
+&nbsp;
+
+$$\begin{aligned}
+\hat{v} & ~ = ~ \frac{\displaystyle \sum\limits_{i = 1}^{n} \frac{1}{d_{i}^{p}}v_{i}}{\displaystyle \sum\limits_{i = 1}^{n}\frac{1}{d_{i}^{p}}} \\
+\\
+where: & \\
+\\
+d_1 \ldots d_n & ~ = ~ \text{distances from each } n \text{ sampling points to estimation point} \\
+p & ~ = ~ \text{power of the distance} \\
+v_1 \ldots v_n & ~ = ~ \text{sample values}
+\end{aligned}$$
+
+\newpage
+
+```{r indicators31, echo = FALSE, fig.cap = "The blocked weighted bootstrap", fig.align = "center", fig.pos = "H", fig.retina = 1}
+knitr::include_graphics("figures/bbw.png")
+```
+
+\newpage
+
+The power of the distance `p` is an important aspect of the IDW method for point estimation. The influence of `p` to the weights applied to the point estimation is such that as `p` approaches 0, the weights become more similar, thereby giving more weight to the nearest sample values.  As `p` approaches $\infty$, the weights become more different from each other, thereby giving more weight to the closest sample. The power of the distance `p` has been traditionally set at 2 for convenience and ease of calculations. In theory, given a set `p`, IDW calculations can be performed using manual calculations aided by a spreadsheet and / or a calculator as it requires fewer calculations. For the Liberia Coverage Survey, `p` will be initially set at 2 and then cross-validation (see below) will be applied to optimise `p` to a value that minimises the estimation errors at each of the sampling point locations.
+
+Cross-validation is a technique applied to validate predictive models. It assesses how accurately the predictive model performs in practice. IDW is one of the simplest model-based interpolation methods available, but ideally would still require a form of cross-validation to determine the optimal value of the distance power `p` (described above).
+
+A two-fold cross validation [@bivand2008applied] in which data points are randomly split into two sets of equal size, with one set assigned as the validation data for testing the model, and the other set as the training data. The validation data is then interpolated using the IDW method with an initial `p` of 2 and the resulting predictions were compared with the training data. Comparison is made using the sum of the squared residuals between the predicted values and the observed values to report errors. Optimisation is then performed by replicating the two-fold cross validation process 100 times using randomly generated values for `p`. Out of these replicates, the value of `p` that provided prediction results with the minimum errors is selected as the distance power for the eventual interpolation performed.
+
+# Results and Discussion
+
+## Iron-Folic Acid Supplementation Coverage
+
+Figure \@ref(fig:ifa1plot) and Table \@ref(tab:ifa1table) presents a summary of the IFA supplementation coverage indicators for Greater Monrovia and Grand Bassa at baseline and endline. The majority of mothers surveyed at baseline and endline from Greater Monrovia and Grand Bassa have attended ANC during their last pregnancy, are aware of IFA tablets, have received IFA tablets and have consumed IFA tablets. Knowledge, receipt and consumption of IFA have all increased at endline compared to baseline with the increase being statistically significant. However, coverage of IFA falters significantly in both areas when length of IFA tablet consumption is assessed with no improvement at endline compared to baseline (see Figure \@ref(fig:ifaTanahashiPlot)).
+
+```{r ifa1plot, echo = FALSE, eval = TRUE, fig.cap = "IFA supplementation coverage", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
+## Baseline data
+ifaEst <- read.csv("data/ifaEst.csv")
+x <- ifaEst
+x <- x[x$indicator %in% paste("ifa", 1:5, sep = ""), ]
+
+varNames <- c("At least one ANC visit",
+              "At least one ANC visit",
+              "Know/heard about IFA",
+              "Know/heard about IFA",
+              "Received/purchased IFA",
+              "Received/purchased IFA",
+              "Consumed IFA",
+              "Consumed IFA",
+              "Consumed IFA for\n90 days or more",
+              "Consumed IFA for\n90 days or more")
+
+x <- data.frame(x[ , c("county", "indicator")], df = "ifaDF", varNames, x[ , c("estimate", "lcl", "ucl")])
+names(x)[2] <- "varLabel"
+
+x$county <- ifelse(x$county == "Monrovia", "Greater Monrovia", x$county)
+x$varLabel <- ifelse(x$varLabel == "ifa5", "ifa6", x$varLabel)
+
+x <- data.frame(round = "Baseline", x)
+
+## Endline data
+y <- ifaBoot[ifaBoot$varLabel %in% paste("ifa", c(1:4, 6), sep = ""), ]
+y$varNames <- rep(unique(varNames), 2)
+
+y <- data.frame(round = "Endline", y)
+
+## Concatenate
+ifaDF <- data.frame(rbind(x, y))
+
+ifaDF$county <- factor(ifaDF$county, levels = c("Greater Monrovia", "Grand Bassa"))
+ifaDF$varNames <- factor(ifaDF$varNames, levels = unique(varNames))
+
+ggplot(data = ifaDF, mapping = aes(x = round, y = estimate * 100)) +
+  geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
+  facet_grid(county ~ varNames) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(from = 0, to = 100, by = 20)) +
+  themeSettings +
+  theme(strip.text.x = element_text(size = 12))
+```
+
+```{r ifaTanahashiPlot, echo = FALSE, eval = TRUE, fig.cap = "Tanahashi plot for IFA supplementation coverage", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
+ggplot(data = ifaDF, aes(x = varNames, y = estimate * 100, group = df)) +
+  #geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
+  geom_area(mapping = aes(ymin = 0, ymax = estimate * 100),
+            fill = "#247BA0", alpha = 0.5) +
+  geom_path(colour = "#247BA0", size = 1.5, 
+            lineend = "round", linejoin = "round") +
+  geom_segment(mapping = aes(x = varNames, xend = varNames,
+                             y = 0, yend = estimate * 100),
+               size = 1, linetype = "solid", 
+               lineend = "round", linejoin = "round",
+               arrow = arrow(length = unit(0.15, "cm"),
+                             ends = "both", type = "closed"),
+               colour = "#85010C") +
+  #geom_point(color = "#247BA0", fill = "#247BA0", 
+  #           size = 4) +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(from = 0, to = 100, by = 20)) +
+  facet_grid(round ~ county) +
+  labs(x = "", y = "%") +
+  coord_flip() +
+  themeSettings
+```
+
+```{r ifa1table, echo = FALSE, eval = TRUE}
+varNames <- c("At least one ANC visit",
+              "Know/heard about IFA",
+              "Received/purchased IFA",
+              "Consumed IFA",
+              "Consumed IFA for 90 days or more")
+
+x <- ifaEst[ifaEst$county == "Monrovia" & ifaEst$indicator %in% c("ifa1", "ifa2", "ifa3", "ifa4", "ifa5"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+x$indicator <- varNames
+y <- ifaBoot[ifaBoot$county == "Greater Monrovia" & ifaBoot$varLabel %in% c("ifa1", "ifa2", "ifa3", "ifa4", "ifa6"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+gm <- data.frame(x, y)
+
+
+x <- ifaEst[ifaEst$county == "Grand Bassa" & ifaEst$indicator %in% c("ifa1", "ifa2", "ifa3", "ifa4", "ifa5"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+x$indicator <- varNames
+y <- ifaBoot[ifaBoot$county == "Grand Bassa" & ifaBoot$varLabel %in% c("ifa1", "ifa2", "ifa3", "ifa4", "ifa6"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+gb <- data.frame(x, y)
+
+allTab <- data.frame(gm, gb[ , 2:ncol(gb)])
+
+kable(x = allTab,
+      caption = "Iron-folic acid supplementation coverage",
+      booktabs = TRUE,
+      col.names = linebreak(c("Indicator", rep(c("Est\n(\\%)", "95\\%\nLCL", "95\\%\nUCL"), 4)),
+                            align = "c"),
+      row.names = FALSE,
+      escape = FALSE,
+      format = "latex") %>%
+  row_spec(row = 0, bold = TRUE, align = "c") %>%
+  column_spec(column = 2:ncol(allTab), monospace = TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
+  add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE) #%>%
+  #landscape()
+```
+
+Of the few who have not received IFA tablets in Greater Monrovia and Grand Bassa despite attending ANC during their last pregnancy, the main reasons for not getting IFA tablets are shown in Figure \@ref(fig:ifa2plot)
+
+```{r ifa2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving/purchasing IFA supplementation", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
+ifaEst <- read.csv("data/ifaEst.csv")
+x <- ifaEst[ifaEst$indicator %in% paste("ifa3a.", 1:10, sep = "") & ifaEst$county == "Monrovia", ]
+x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
+                                                  "Took too long to get tablets",
+                                                  "Too expensive",
+                                                  "Too far from clinic/hospital",
+                                                  "No information where to get tablets",
+                                                  "Did not go to hospital/clinic",
+                                                  "Used traditional medicine",
+                                                  "Not available to buy",
+                                                  "Ebola time",
+                                                  "Other"))
+
+x <- x[x$estimate != 0, ]
+
+baselineGM <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) +
+  coord_flip() +
+  themeSettings
+
+x <- ifaBoot[ifaBoot$varLabel %in% paste("ifa3", letters[1:9], sep = "") & ifaBoot$county == "Greater Monrovia", ]
+x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
+                                                "Took too long to get tablets",
+                                                "Too expensive",
+                                                "Did not go to hospital",
+                                                "Don't know about iron-folic acid",
+                                                "Didn't get any iron-folic acid",
+                                                "Received but did not take",
+                                                "Not interested",
+                                                "No reason"))
+
+x <- x[x$estimate != 0, ]
+
+endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- ifaEst[ifaEst$indicator %in% paste("ifa3a.", 1:10, sep = "") & ifaEst$county == "Grand Bassa", ]
+x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
+                                                  "Took too long to get tablets",
+                                                  "Too expensive",
+                                                  "Too far from clinic/ hospital",
+                                                  "No information where to get tablets",
+                                                  "Did not go to hospital/clinic",
+                                                  "Used traditional medicine",
+                                                  "Not available to buy",
+                                                  "Ebola time",
+                                                  "Other"))
+
+x <- x[x$estimate != 0, ]
+
+baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- ifaBoot[ifaBoot$varLabel %in% paste("ifa3", letters[1:15], sep = "") & ifaBoot$county == "Grand Bassa", ]
+x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
+                                                "Took too long to get tablets",
+                                                "Too expensive",
+                                                "Did not go to hospital",
+                                                "Don't know about iron-folic acid",
+                                                "Didn't get any iron-folic acid",
+                                                "Received but did not take",
+                                                "Not interested",
+                                                "No reason",
+                                                "No money",
+                                                "Not good",
+                                                "Far from health centre/ hospital",
+                                                "Not given tablets",
+                                                "No time",
+                                                "Don't like medicine"))
+
+x <- x[x$estimate != 0, ]
+
+endlineGB <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+
+plot_grid(baselineGM, endlineGM, baselineGB, endlineGB, 
+          nrow = 2,  ncol = 2,
+          labels = c("Baseline - Greater Monrovia", "Endline - Greater Monrovia",
+                     "Baseline - Grand Bassa", "Endline - Grand Bassa"), 
+          label_size = 12, label_colour = "#247BA0", 
+          hjust = c(-1.4, -1.5, -1.85, -2),
+          vjust = 1)
+```
+
+The spatial distribution of IFA supplementation coverage in Greater Monrovia and Grand Bassa is shown in Figure \@ref(fig:ifa1map). At baseline, IFA supplementation coverage was lowest in the eastern section of Monrovia. At endline, these areas have increased coverage. For Grand Bassa, IFA supplementation coverage was lowest in the southern and eastern parts of the county. At endline, these areas have increased coverage but with new but much smaller hot spots of low coverage in different parts of the county. The maps show the significant faltering in IFA coverage once adequate consumption of IFA is considered.
+
+```{r ifa1Map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of IFA supplementation coverage in Greater Monrovia", fig.width = 15, fig.height = 6, fig.align = "center", fig.pos = "H"}
+x <- subset(ifaBaseGM, select = c(county, ifa1, ifa2, ifa3, ifa4, ifa5))
+names(x) <- c("county", "ifa1", "ifa2", "ifa3", "ifa4", "ifa5")
+x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
+xGeom <- fortify(x)
+xGeom <- merge(xGeom, x@data, by = "id")
+
+y <- subset(gmCovHex, select = c(county, ifa1, ifa2, ifa3, ifa4, ifa6))
+names(y) <- c("county", "ifa1", "ifa2", "ifa3", "ifa4", "ifa5")
+y@data <- data.frame(id = row.names(y), round = "Endline", y@data)
+yGeom <- fortify(y)
+yGeom <- merge(yGeom, y@data, by = "id")
+
+xyGeom <- data.frame(rbind(xGeom, yGeom))
+xyGeom <- pivot_longer(data = xyGeom, cols = ifa1:ifa5, names_to = "indicator", values_to = "estimate")
+
+xyGeom$indicator <- factor(x = xyGeom$indicator,
+                            labels = c("At least one ANC visit",
+                                       "Know/heard about IFA",
+                                       "Received/purchased IFA",
+                                       "Consumed IFA",
+                                       "Consumed IFA for 90 days or more"))
+
+ggplot(data = xyGeom, 
+       aes(x = long, y = lat, group = group, fill = estimate)) +
+  geom_polygon() +
+  scale_fill_gradientn(name = "%",
+                       limits = c(0, 1), 
+                       breaks = seq(from = 0, to = 1, by = .2),
+                       labels = seq(from = 0, to = 100, by = 20),
+                       colours = map.palette(101)) +
+  scale_x_continuous(limits = bbox(greaterMonroviaEA)[1, ], 
+                     breaks = seq(from = bbox(greaterMonroviaEA)[1, 1],
+                                  to = bbox(greaterMonroviaEA)[1, 2],
+                                  by = 0.01)) +
+  scale_y_continuous(limits = bbox(greaterMonroviaEA)[2, ],
+                     breaks = seq(from = bbox(greaterMonroviaEA)[2, 1],
+                                  to = bbox(greaterMonroviaEA)[2, 2],
+                                  by = 0.01)) +
+  facet_grid(round ~ indicator) +
+  labs(x = "", y = "") +
+  themeSettings +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
+```
+
+```{r ifa2Map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of IFA supplementation coverage in Grand Bassa", fig.width = 15, fig.height = 6, fig.align = "center", fig.pos = "H"}
+x <- subset(ifaBaseGB, select = c(county, ifa1, ifa2, ifa3, ifa4, ifa5))
+names(x) <- c("county", "ifa1", "ifa2", "ifa3", "ifa4", "ifa5")
+x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
+xGeom <- fortify(x)
+xGeom <- merge(xGeom, x@data, by = "id")
+
+y <- subset(gbCovHex, select = c(county, ifa1, ifa2, ifa3, ifa4, ifa6))
+names(y) <- c("county", "ifa1", "ifa2", "ifa3", "ifa4", "ifa5")
+y@data <- data.frame(id = row.names(y), round = "Endline", y@data)
+yGeom <- fortify(y)
+yGeom <- merge(yGeom, y@data, by = "id")
+
+xyGeom <- data.frame(rbind(xGeom, yGeom))
+xyGeom <- pivot_longer(data = xyGeom, cols = ifa1:ifa5, names_to = "indicator", values_to = "estimate")
+
+xyGeom$indicator <- factor(x = xyGeom$indicator,
+                            labels = c("At least one ANC visit",
+                                       "Know/heard about IFA",
+                                       "Received/purchased IFA",
+                                       "Consumed IFA",
+                                       "Consumed IFA for 90 days or more"))
+
+ggplot(data = xyGeom, 
+       aes(x = long, y = lat, group = group, fill = estimate)) +
+  geom_polygon() +
+  scale_fill_gradientn(name = "%",
+                       limits = c(0, 1), 
+                       breaks = seq(from = 0, to = 1, by = .2),
+                       labels = seq(from = 0, to = 100, by = 20),
+                       colours = map.palette(101)) +
+  scale_x_continuous(limits = bbox(grandBassaEA)[1, ], 
+                     breaks = seq(from = bbox(grandBassaEA)[1, 1],
+                                  to = bbox(grandBassaEA)[1, 2],
+                                  by = 0.01)) +
+  scale_y_continuous(limits = bbox(grandBassaEA)[2, ],
+                     breaks = seq(from = bbox(grandBassaEA)[2, 1],
+                                  to = bbox(grandBassaEA)[2, 2],
+                                  by = 0.01)) +
+  facet_grid(round ~ indicator) +
+  labs(x = "", y = "") +
+  themeSettings +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
+```
+
+\newpage
+
+## IYCF Counselling Coverage
+
+Knowledge of and attendance to IYCF counselling is both close to 80% in Greater Monrovia and Grand Bassa at baseline. At endline, these indicators increase to close to 90% (see Figure \@ref(fig:icf1plot) and Table \@ref(tab:icf1table)).
+
+```{r icf1plot, echo = FALSE, eval = TRUE, fig.cap = "IYCF Counselling Coverage in Greater Monrovia", fig.height = 8, fig.width = 8, fig.align = "center", fig.pos = "H"}
+icfEst <- read.csv("data/icfEst.csv")
+x <- icfEst
+
+x <- x[x$indicator %in% paste("icf", 1:2, sep = ""), ]
+
+varNames <- c("Know/heard about IYCF counselling",
+              "Know/heard about IYCF counselling",
+              "Attended IYCF counselling",
+              "Attended IYCF counselling")
+
+x <- data.frame(x[ , c("county", "indicator")], df = "iycfDF", varNames, x[ , c("estimate", "lcl", "ucl")])
+names(x)[2] <- "varLabel"
+
+x$county <- ifelse(x$county == "Monrovia", "Greater Monrovia", x$county)
+
+x <- data.frame(round = "Baseline", x)
+
+## Endline data
+y <- iycfBoot[iycfBoot$varLabel %in% paste("icf", 1:2, sep = ""), ]
+y$varNames <- rep(unique(varNames), 2)
+
+y <- data.frame(round = "Endline", y)
+
+## Concatenate
+iycfDF <- data.frame(rbind(x, y))
+
+iycfDF$county <- factor(iycfDF$county, levels = c("Greater Monrovia", "Grand Bassa"))
+iycfDF$varNames <- factor(iycfDF$varNames, levels = unique(varNames))
+
+ggplot(data = iycfDF, mapping = aes(x = round, y = estimate * 100)) +
+  geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
+  facet_grid(county ~ varNames) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(from = 0, to = 100, by = 20)) +
+  themeSettings +
+  theme(strip.text.x = element_text(size = 12))
+```
+
+```{r icf1table, echo = FALSE, eval = TRUE}
+varNames <- c("Know/heard about IYCF counselling",
+              "Attended IYCF counselling")
+
+x <- icfEst[icfEst$county == "Monrovia" & icfEst$indicator %in% c("icf1", "icf2"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+x$indicator <- varNames
+y <- iycfBoot[iycfBoot$county == "Greater Monrovia" & iycfBoot$varLabel %in% c("icf1", "icf2"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+gm <- data.frame(x, y)
+
+x <- icfEst[icfEst$county == "Grand Bassa" & icfEst$indicator %in% c("icf1", "icf2"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+x$indicator <- varNames
+y <- iycfBoot[iycfBoot$county == "Grand Bassa" & iycfBoot$varLabel %in% c("icf1", "icf2"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+gb <- data.frame(x, y)
+
+allTab <- data.frame(gm, gb[ , 2:ncol(gb)])
+
+kable(x = allTab,
+      caption = "IYCF counselling coverage",
+      booktabs = TRUE,
+      col.names = linebreak(c("Indicator", rep(c("Est\n(\\%)", "95\\%\nLCL", "95\\%\nUCL"), 4)),
+                            align = "c"),
+      row.names = FALSE,
+      escape = FALSE,
+      format = "latex") %>%
+  row_spec(row = 0, bold = TRUE) %>%
+  column_spec(column = 2:ncol(allTab), monospace = TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
+  add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE) #%>%
+  #landscape()
+```
+
+\newpage
+
+Of the few who did not attend IYCF counselling in Greater Monrovia, their main reasons for not attending are presented in \@ref(fig:icf2table).
+
+```{r icf2table, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not attending IYCF counselling in Greater Monrovia", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
+icfEst <- read.csv("data/icfEst.csv")
+x <- icfEst[icfEst$indicator %in% paste("icf2a.", 1:11, sep = "") & icfEst$county == "Monrovia", ]
+x$indicator <- factor(x = x$indicator, labels = c("Timing not convenient",
+                                                  "Not interested",
+                                                  "Do not trust counselor",
+                                                  "Don't think I need it",
+                                                  "Did not go to hospital/clinic", 
+                                                  "During Ebola period", 
+                                                  "IYCF counselling not available",
+                                                  "No information on how\nto access counselling",
+                                                  "No money to go to hospital",
+                                                  "No time/too busy",
+                                                  "Too far from clinic/hospital"))
+
+x <- x[x$estimate != 0, ]
+
+baselineGM <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- iycfBoot[iycfBoot$varLabel %in% paste("icf2", letters[1:7], sep = "") & iycfBoot$county == "Greater Monrovia", ]
+x$varLabel <- factor(x = x$varLabel, labels = c("Timing not convenient",
+                                                "Not interested",
+                                                "Do not trust counselor",
+                                                "Don't think I need it",
+                                                "Did not go to hospital",
+                                                "No one told me about it/\nnot invited",
+                                                "No time"))
+
+x <- x[x$estimate != 0, ]
+
+endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- icfEst[icfEst$indicator %in% paste("icf2a.", 1:11, sep = "") & icfEst$county == "Grand Bassa", ]
+x$indicator <- factor(x = x$indicator, labels = c("Timing not convenient",
+                                                  "Not interested",
+                                                  "Do not trust counselor",
+                                                  "Don't think I need it",
+                                                  "Did not go to hospital/clinic", 
+                                                  "During Ebola period", 
+                                                  "IYCF counselling not\navailable",
+                                                  "No information on how\nto access counselling",
+                                                  "No money to go to hospital",
+                                                  "No time/too busy",
+                                                  "Too far from clinic/hospital"))
+
+x <- x[x$estimate != 0, ]
+
+baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- iycfBoot[iycfBoot$varLabel %in% paste("icf2", letters[1:14], sep = "") & iycfBoot$county == "Grand Bassa", ]
+x$varLabel <- factor(x = x$varLabel, labels = c("Timing not convenient",
+                                                "Not interested",
+                                                "Do not trust counselor",
+                                                "Don't think I need it",
+                                                "Did not go to hospital",
+                                                "No one told me about it/\nnot invited",
+                                                "No time",
+                                                "No interest",
+                                                "Don't know about it",
+                                                "Too far",
+                                                "No money",
+                                                "Carer not around",
+                                                "Too weak to go",
+                                                "Don't like medicine"))
+
+x <- x[x$estimate != 0, ]
+
+endlineGB <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+plot_grid(baselineGM, endlineGM, baselineGB, endlineGB,
+          nrow = 2, ncol = 2,
+          labels = c("Baseline - Greater Monrovia", "Endline - Greater Monrovia",
+                     "Baseline - Grand Bassa", "Endline - Grand Bassa"),
+          label_size = 12, label_colour = "#247BA0", 
+          hjust = c(-1.4, -1.5, -1.85, -2),
+          vjust = 1)
+```
+
+Spatial distribution of IYCF counselling coverage in Greater Monrovia is shown in Figure \@ref(fig:icf1map). IYCF counselling coverage was at its lowest in eastern sections of Monrovia at baseline. These areas have improved coverage at endline. IYCF counselling coverage was at its lowest in southern sections of Grand Bassa at baseline. These areas have improved coverage at endline but with newer focused areas of low coverage spread throughout the county.
+
+```{r icf1map, echo = FALSE, eval = TRUE, fig.cap = "Spatial Distribution of IYCF Counselling Coverage in Grand Bassa", fig.width = 12, fig.height = 6, fig.align = "center", fig.pos = "H", fig.show = "hold"}
+par(mar = c(0, 0, 0 ,0), mfrow = c(2, 4))
+
+plot(icfBaseGM, lty = 0, col = map.palette(n = 101)[(icfBaseGM[["icf1"]] * 100) + 1])
+title(main = "Baseline: Know about IYCF counselling", cex = 1, line = -1)
+
+plot(icfBaseGM, lty = 0, col = map.palette(n = 101)[(icfBaseGM[["icf2"]] * 100) + 1])
+title(main = "Baseline: Attended IYCF counselling", cex = 1, line = -1)
+
+plot(icfBaseGB, lty = 0, col = map.palette(n = 101)[(icfBaseGB[["icf1"]] * 100) + 1])
+title(main = "Baseline: Know about IYCF counselling", cex = 1, line = -1)
+
+plot(icfBaseGB, lty = 0, col = map.palette(n = 101)[(icfBaseGB[["icf2"]] * 100) + 1])
+title(main = "Baseline: Attended IYCF counselling", cex = 1, line = -1)
+
+plot(gmCovHex, lty = 0, col = map.palette(n = 101)[(gmCovHex[["icf1"]] * 100) + 1])
+title(main = "Endline: Know about IYCF counselling", cex = 1, line = -1)
+
+plot(gmCovHex, lty = 0, col = map.palette(n = 101)[(gmCovHex[["icf2"]] * 100) + 1])
+title(main = "Endline: Attended IYCF counselling", cex = 1, line = -1)
+
+plot(gbCovHex, lty = 0, col = map.palette(n = 101)[(gbCovHex[["icf1"]] * 100) + 1])
+title(main = "Endline: Know about IYCF counselling", cex = 1, line = -1)
+
+plot(gbCovHex, lty = 0, col = map.palette(n = 101)[(gbCovHex[["icf2"]] * 100) + 1])
+title(main = "Endline: Attended IYCF counselling", cex = 1, line = -1)
+```
+
+\newpage
+
+## Micronutrient Powder Supplementation Coverage
+
+Figure \@ref(fig:mnp1plot) and Table \@ref(tab:mnp1table) summarises the hierarchical MNP supplementation coverage indicators in Greater Monrovia. MNP supplementation coverage was extremely low at baseline which is understandable given that programme was at its infancy. At endline, however, the MNP supplementation coverage indicators have increased significantly compared to baseline with estimates approaching 50%.
+
+MNP supplementation coverage was extremely low at baseline at no more than 10% which is very low even for a programme at its early stages. At endline, however, the MNP supplementation coverage indicators have increased significantly compared to baseline with estimates approaching 42%.
+
+```{r mnp1plot, echo = FALSE, eval = TRUE, fig.cap = "Micronutrient Powder Supplementation Coverage in Greater Monrovia", fig.height = 8, fig.width = 12, fig.align = "center", fig.pos = "H"}
+mnpEst <- read.csv("data/mnpEst.csv")
+x <- mnpEst
+
+x <- x[x$indicator %in% paste("mnp", 1:3, sep = ""), ]
+
+varNames <- c("Heard about micronutrient powder",
+              "Received/purchased micronutrient powder",
+              "Child consumed micronutrient powder")
+
+x <- data.frame(x[ , c("county", "indicator")], df = "mnpDF", varNames, x[ , c("estimate", "lcl", "ucl")])
+names(x)[2] <- "varLabel"
+
+x$county <- ifelse(x$county == "Monrovia", "Greater Monrovia", x$county)
+
+x <- data.frame(round = "Baseline", x)
+
+## Endline data
+y <- mnpBoot[mnpBoot$varLabel %in% paste("mnp", 1:3, sep = ""), ]
+y$varNames <- rep(unique(varNames), 2)
+
+y <- data.frame(round = "Endline", y)
+
+## Concatenate
+mnpDF <- data.frame(rbind(x, y))
+
+mnpDF$county <- factor(mnpDF$county, levels = c("Greater Monrovia", "Grand Bassa"))
+mnpDF$varNames <- factor(mnpDF$varNames, levels = unique(varNames))
+
+ggplot(data = mnpDF, mapping = aes(x = round, y = estimate * 100)) +
+  geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
+  facet_grid(county ~ varNames) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(from = 0, to = 100, by = 20)) +
+  themeSettings +
+  theme(strip.text.x = element_text(size = 12))
+```
+
+```{r mnp1table, echo = FALSE, eval = TRUE}
+x <- mnpEst[mnpEst$county == "Monrovia" & mnpEst$indicator %in% c("mnp1", "mnp2", "mnp3"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+x$indicator <- c("Heard about micronutrient powder",
+                 "Received/purchased micronutrient powder",
+                 "Child consumed micronutrient powder")
+y <- mnpBoot[mnpBoot$county == "Greater Monrovia" & mnpBoot$varLabel %in% c("mnp1", "mnp2", "mnp3"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+gm <- data.frame(x, y)
+
+x <- mnpEst[mnpEst$county == "Grand Bassa" & mnpEst$indicator %in% c("mnp1", "mnp2", "mnp3"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+x$indicator <- c("Heard about micronutrient powder",
+                 "Received/purchased micronutrient powder",
+                 "Child consumed micronutrient powder")
+y <- mnpBoot[mnpBoot$county == "Grand Bassa" & mnpBoot$varLabel %in% c("mnp1", "mnp2", "mnp3"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+gb <- data.frame(x, y)
+
+allTab <- data.frame(gm, gb[ , 2:ncol(gb)])
+
+kable(x = allTab,
+      caption = "MNP supplementation coverage",
+      booktabs = TRUE,
+      col.names = linebreak(c("Indicator", rep(c("Est\n(\\%)", "95\\%\nLCL", "95\\%\nUCL"), 4)),
+                            align = "c"),
+      row.names = FALSE,
+      escape = FALSE,
+      format = "latex") %>%
+  row_spec(row = 0, bold = TRUE) %>%
+  column_spec(column = 2:ncol(allTab), monospace = TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
+  add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE) #%>%
+  #landscape()
+```
+
+The main reasons for not receiving MNP supplements are presented in Figure \@ref(mnp2plot). At baseline, availability of MNP was the main reason for non-coverage consistent with MNP supplementation coverage indicator results. At endline, reasons have shifted more to personal preferences by parents not to have children take the MNP supplement. Lack of information on MNP supplementation is the main reason for non-coverage consistent with MNP supplementation coverage indicator results.
+
+```{r mnp2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving micronutrient powder in Greater Monrovia", fig.width = 12, fig.height = 8, fig.align = "center", fig.show = "hold", fig.pos = "H"}
+mnpEst <- read.csv("data/mnpEst.csv")
+x <- mnpEst[mnpEst$indicator %in% paste("mnp2a.", 1:10, sep = "") & mnpEst$county == "Monrovia", ]
+x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
+                                                  "Took too long to get\nmicronutrient powder",
+                                                  "Too expensive",
+                                                  "Child doesn't need it",
+                                                  "Heard it doesn't work/help",
+                                                  "Did not receive micronutrient powder/\nnot in programme",
+                                                  "Micronutrient powder not available",
+                                                  "Mother/child was sick",
+                                                  "Never asked for it",
+                                                  "No information on how to access\nmicronutrient powder"))
+
+x <- x[x$estimate != 0, ]
+
+baselineGM <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- mnpBoot[mnpBoot$varLabel %in% paste("mnp2", letters[1:9], sep = "") & mnpBoot$county == "Greater Monrovia", ]
+x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
+                                                "Took too long to get\nmicronutrient powder",
+                                                "Too expensive",
+                                                "Child doesn't need it",
+                                                "Heard it doesn't work/help",
+                                                "Don't know/not seen/not heard of\nmicronutrient powder",
+                                                "Have not gone to hospital",
+                                                "Have not received any\nfrom hospital/centre",
+                                                "Hospital didn't tell me about it"))
+
+x <- x[x$estimate != 0, ]
+
+endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- mnpEst[mnpEst$indicator %in% paste("mnp2a.", 1:10, sep = "") & mnpEst$county == "Grand Bassa", ]
+x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
+                                                  "Took too long to get\nmicronutrient powder",
+                                                  "Too expensive",
+                                                  "Child doesn't need it",
+                                                  "Heard it doesn't work/help",
+                                                  "Did not receive micronutrient powder/\nnot in programme",
+                                                  "Micronutrient powder\nnot available",
+                                                  "Mother/child was sick",
+                                                  "Never asked for it",
+                                                  "No information on how to access\nmicronutrient powder"))
+
+x <- x[x$estimate != 0, ]
+
+baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- mnpBoot[mnpBoot$varLabel %in% paste("mnp2", letters[1:17], sep = "") & mnpBoot$county == "Grand Bassa", ]
+x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
+                                                "Took too long to get\nmicronutrient powder",
+                                                "Too expensive",
+                                                "Child doesn't need it",
+                                                "Heard it doesn't work/help",
+                                                "Don't know/not seen/not heard of\nmicronutrient powder",
+                                                "Have not gone to hospital",
+                                                "Have not received any\nfrom hospital/centre",
+                                                "Hospital didn't tell me about it",
+                                                "Child not sick/healthy/\ndoesn't need it",
+                                                "Child doesn't want to take it",
+                                                "Too far",
+                                                "Don't want it/not interested",
+                                                "Hospital doesn't have it",
+                                                "Mother not around",
+                                                "No means",
+                                                "Mother pregnant at the time"))
+
+x <- x[x$estimate != 0, ]
+
+endlineGB <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings +
+  theme(axis.text.y = element_text(size = 9))
+
+plot_grid(baselineGM, endlineGM, baselineGB, endlineGB,
+          nrow = 2, ncol = 2,
+          labels = c("Baseline - Greater Monrovia", "Endline - Greater Monrovia",
+                     "Baseline - Grand Bassa", "Endline - Grand Bassa"),
+          label_size = 12, label_colour = "#247BA0", 
+          hjust = c(-1.4, -1.5, -1.85, -2),
+          vjust = 1)
+```
+
+Spatial distribution of MNP supplementation coverage was across the board low in Greater Monrovia at baseline. By endline, areas in the north and central areas of Monrovia have improved coverage (see Figure \@ref(@mnp1map)). Spatial distribution of MNP supplementation coverage was across the board extremely low in Grand Bassa at baseline. By endline, areas in the north and central areas of Grand Bassa have improved coverage.
+
+```{r mnp1map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of MNP supplementation coverage", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
+par(mar = c(0, 0, 0 ,0), mfrow = c(4, 3))
+
+varLab <- c("mnp1", "mnp2", "mnp3")
+varName <- c("Know/heard about MNP",
+             "Received/purchased MNP",
+             "Consumed MNP")
+
+for(i in 1:length(varLab)) {
+  plot(mnpBaseGM, lty = 0, col = map.palette(n = 101)[(mnpBaseGM[[varLab[i]]] * 100) + 1])
+  title(main = paste("Baseline: ", varName[i], sep = ""), cex = 2, line = -1)
+}
+
+for(i in 1:length(varLab)) {
+  plot(gmCovHex, lty = 0, col = map.palette(n = 101)[(gmCovHex[[i]] * 100) + 1])
+  title(main = paste("Endline: ", varName[i], sep = ""), cex = 2, line = -1)
+}
+
+for(i in 1:length(varLab)) {
+  plot(mnpBaseGB, lty = 0, col = map.palette(n = 101)[(mnpBaseGB[[varLab[i]]] * 100) + 1])
+  title(main = paste("Baseline: ", varName[i], sep = ""), cex = 2, line = -1)
+}
+
+for(i in 1:length(varLab)) {
+  plot(gbCovHex, lty = 0, col = map.palette(n = 101)[(gbCovHex[[i]] * 100) + 1])
+  title(main = paste("Endline: ", varName[i], sep = ""), cex = 2, line = -1)
+}
+```
+
+\newpage
+
+## Vitamin A Supplementation Coverage
+
+Vitamin A supplementation coverage in Greater Monrovia is shown in Figure \@ref(fig:vit1plot). There were 82% of children 6-59 months in Greater Monrovia who received vitamin A supplementation in the past 6 months at baseline. This rate dropped slightly at endline to 78% though this difference is not statistically significant.
+
+```{r vit1plot, echo = FALSE, eval = TRUE, fig.cap = "Vitamin A Supplementation Coverage in Greater Monrovia", fig.height = 8, fig.width = 6, fig.align = "center", fig.pos = "H"}
+vitEst <- read.csv("data/vitEst.csv")
+x <- vitEst
+
+x <- x[x$indicator == "vit1", ]
+
+varNames <- rep("Received vitamin A in the past 6 months", 2)
+
+x <- data.frame(x[ , c("county", "indicator")], df = "vitDF", varNames, x[ , c("estimate", "lcl", "ucl")])
+names(x)[2] <- "varLabel"
+
+x$county <- ifelse(x$county == "Monrovia", "Greater Monrovia", x$county)
+
+x <- data.frame(round = "Baseline", x)
+
+## Endline data
+y <- vitBoot[vitBoot$varLabel == "vit1", ]
+y$varNames <- varNames
+
+y <- data.frame(round = "Endline", y)
+
+## Concatenate
+vitDF <- data.frame(rbind(x, y))
+
+vitDF$county <- factor(vitDF$county, levels = c("Greater Monrovia", "Grand Bassa"))
+vitDF$varNames <- factor(vitDF$varNames, levels = unique(varNames))
+
+ggplot(data = vitDF, mapping = aes(x = round, y = estimate * 100)) +
+  geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
+  facet_grid(county ~ varNames) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(from = 0, to = 100, by = 20)) +
+  themeSettings +
+  theme(strip.text.x = element_text(size = 12))
+```
+
+Spatial distribution of vitamin A supplementation is shown in Figure \@ref(fig:vit1map). The south and eastern areas of Monrovia have the lowest vitamin A supplementation coverage which have shown improvement at endline though other areas in the northeast and southwest of Greater Monrovia have decreased vitamin A supplementation. The south, central and northern areas of Grand Bassa have the lowest vitamin A supplementation coverage which have shown improvement at endline though other areas in the southeast and northeast of Grand Bassa have decreased vitamin A supplementation.
+
+```{r vit1map, echo = FALSE, eval = FALSE, fig.cap = "Spatial Distribution of Vitamin A Coverage in Greater Monrovia", fig.width = 12, fig.height = 12, fig.align = "center", fig.pos = "H"}
+par(mar = c(0, 0, 0 ,0), mfrow = c(2, 2))
+
+plot(vitBaseGM, lty = 0, col = map.palette(n = 101)[(vitBaseGM[["vit1"]] * 100) + 1])
+title(main = "Baseline: Received vitamin A in past 6 months", cex = 2, line = -1)
+
+plot(gmCovHex, lty = 0, col = map.palette(n = 101)[(gmCovHex[["vit1"]] * 100) + 1])
+title(main = "Endline: Received vitamin A in past 6 months", cex = 2, line = -1)
+
+plot(vitBaseGB, lty = 0, col = map.palette(n = 101)[(vitBaseGB[["vit1"]] * 100) + 1])
+title(main = "Baseline: Received vitamin A in past 6 months", cex = 2, line = -1)
+
+plot(gbCovHex, lty = 0, col = map.palette(n = 101)[(gbCovHex[["vit1"]] * 100) + 1])
+title(main = "Endline: Received vitamin A in past 6 months", cex = 2, line = -1)
+```
+
+The main reasons for not receiving vitamin A are presented in Figure \@ref(fig:vit2plot).
+
+```{r vit2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving vitamin A", fig.height = 8, fig.width = 12, fig.align = "center", fig.show = "hold"}
+vitEst <- read.csv("data/vitEst.csv")
+x <- vitEst[vitEst$indicator %in% paste("vit1a.", 1:11, sep = "") & vitEst$county == "Monrovia", ]
+x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
+                                                  "Took too long to get\nmicronutrient powder",
+                                                  "Child doesn't need it",
+                                                  "Heard it doesn't work/help",
+                                                  "Child just reached 6 months old",
+                                                  "Did not go to hospital/clinic",
+                                                  "No information on how to get vitamin A",
+                                                  "Not around during vaccination",
+                                                  "Not given vitamin A",
+                                                  "Not reached by vaccination team",
+                                                  "Too far from clinic/hospital"))
+
+x <- x[x$estimate != 0, ]
+
+baselineGM <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) +
+  coord_flip() +
+  themeSettings
+
+x <- vitBoot[vitBoot$varLabel %in% paste("vit1", letters[1:10], sep = "") & vitBoot$county == "Greater Monrovia", ]
+x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
+                                                "Took too long to get drops",
+                                                "Child doesn't need it",
+                                                "Heard it doesn't work/help",
+                                                "Child too young during last campaign",
+                                                "Not around during last campaign",
+                                                "Didn't hear/know about it",
+                                                "Never been to hospital",
+                                                "Vaccine team didn't come/reach",
+                                                "Not interested"))
+
+x <- x[x$estimate != 0, ]
+x <- x[!is.na(x$estimate), ]
+
+
+endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- vitEst[vitEst$indicator %in% paste("vit1a.", 1:11, sep = "") & vitEst$county == "Grand Bassa", ]
+x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
+                                                  "Took too long to get\nmicronutrient powder",
+                                                  "Child doesn't need it",
+                                                  "Heard it doesn't work/help",
+                                                  "Child just reached 6 months old",
+                                                  "Did not go to hospital/clinic",
+                                                  "No information on how to get vitamin A",
+                                                  "Not around during vaccination",
+                                                  "Not given vitamin A",
+                                                  "Not reached by vaccination team",
+                                                  "Too far from clinic/hospital"))
+
+x <- x[x$estimate != 0, ]
+
+baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+x <- vitBoot[vitBoot$varLabel %in% paste("vit1", letters[1:15], sep = "") & vitBoot$county == "Grand Bassa", ]
+x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
+                                                "Took too long to get drops",
+                                                "Child doesn't need it",
+                                                "Heard it doesn't work/help",
+                                                "Child too young during last campaign",
+                                                "Not around during last campaign",
+                                                "Didn't hear/know about it",
+                                                "Never been to hospital",
+                                                "Vaccine team didn't come/reach",
+                                                "Not interested",
+                                                "Too far",
+                                                "No facility",
+                                                "No means/money",
+                                                "No time",
+                                                "Waiting for next campaign"))
+
+x <- x[x$estimate != 0, ]
+x <- x[!is.na(x$estimate), ]
+
+endlineGB <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate * 100)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(from = 0, to = 100, by = 20)) + 
+  coord_flip() +
+  themeSettings
+
+plot_grid(baselineGM, endlineGM, baselineGB, endlineGB,
+          nrow = 2, ncol = 2,
+          labels = c("Baseline - Greater Monrovia", "Endline - Greater Monrovia",
+                     "Baseline - Grand Bassa", "Endline - Grand Bassa"),
+          label_size = 12, label_colour = "#247BA0", 
+          hjust = c(-1.4, -1.5, -1.85, -2),
+          vjust = 1)
+```
+
+\newpage
+
+## Acute undernutrition prevalence by MUAC
+
+Prevalence of acute undernutrition is presented in Figure \@ref(fig:nut1plot) and Table \@ref(tab:nut1table). Acute undernutrition rates were highest in Grand Bassa reaching up to 4% GAM and close to 2% GAM in Monrovia at baseline. These estimates are relatively low but are the generally expected values for these areas in Liberia. At endline, the rates for Greater Monrovia increased slightly while for Grand Bassa they decreased slightly.
+
+```{r nut1plot, echo = FALSE, eval = TRUE, fig.cap = "Acute Undernutrition Prevalence in Greater Monrovia", fig.height = 6, fig.width = 12, fig.align = "center", fig.pos = "H", fig.retina = 1}
+## Baseline data
+nutEst <- read.csv("data/nutEst.csv")
+x <- nutEst
+
+varNames <- c("Global acute malnutrition by MUAC",
+              "Global acute malnutrition by MUAC",
+              "Moderate acute malnutrtion by MUAC",
+              "Moderate acute malnutrtion by MUAC",
+              "Severe acute malnutrition by MUAC",
+              "Severe acute malnutrition by MUAC")
+
+x <- data.frame(x[ , c("county", "indicator")], df = "anthroDF", varNames, x[ , c("estimate", "lcl", "ucl")])
+names(x)[2] <- "varLabel"
+x$varLabel <- c(rep("gam.muac", 2), rep("mam.muac", 2), rep("sam.muac", 2))
+
+x$county <- ifelse(x$county == "Monrovia", "Greater Monrovia", x$county)
+
+x <- data.frame(round = "Baseline", x)
+
+## Endline data
+y <- anthroBoot
+y <- y[y$varLabel %in% c("gam.muac", "mam.muac", "sam.muac"),  ]
+y$varNames <- rep(unique(varNames), 2)
+
+y <- data.frame(round = "Endline", y)
+
+## Concatenate
+anthroDF <- data.frame(rbind(x, y))
+
+anthroDF$county <- factor(anthroDF$county, levels = c("Greater Monrovia", "Grand Bassa"))
+anthroDF$varNames <- factor(anthroDF$varNames, levels = unique(varNames))
+
+ggplot(data = anthroDF[anthroDF$varLabel %in% c("mam.muac", "sam.muac"), ], 
+       aes(x = round, y = estimate * 100, fill = varNames)) +
+  geom_col(position = "stack", width = 0.5) +
+  facet_grid(. ~ county) +
+  scale_fill_manual(name = "", values = alpha(c("#ffffbf", "#a50026"), 0.9), 
+                    labels = c("Moderate", "Severe")) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, .05) * 100, breaks = seq(from = 0, to = 5, by = 1)) + 
+  themeSettings +
+  theme(strip.text.x = element_text(size = 12))
+```
+
+```{r nut1table, echo = FALSE, eval = TRUE}
+x <- nutEst[nutEst$county == "Monrovia" & nutEst$indicator %in% c("gam", "mam", "sam"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+x$indicator <- c("Global acute malnutrition", "Moderate acute malnutrition", "Severe acute malnutrition")
+y <- anthroBoot[anthroBoot$county == "Greater Monrovia" & anthroBoot$varLabel %in% c("gam.muac", "mam.muac", "sam.muac"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+gm <- data.frame(x, y)
+
+x <- nutEst[nutEst$county == "Grand Bassa" & nutEst$indicator %in% c("gam", "mam", "sam"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+x$indicator <- c("Global acute malnutrition", "Moderate acute malnutrition", "Severe acute malnutrition")
+y <- anthroBoot[anthroBoot$county == "Grand Bassa" & anthroBoot$varLabel %in% c("gam.muac", "mam.muac", "sam.muac"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 1)
+gb <- data.frame(x, y)
+
+xy <- data.frame(gm, gb[ , 2:ncol(gb)])
+
+kable(x = xy,
+      caption = "Acute undernutrition by MUAC prevalence",
+      booktabs = TRUE,
+      col.names = linebreak(c("Indicator", rep(c("Est\n(\\%)", "95\\%\nLCL", "95\\%\nUCL"), 4)),
+                            align = "c"),
+      row.names = FALSE,
+      escape = FALSE,
+      format = "latex") %>%
+  row_spec(row = 0, bold = TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
+  add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6)) #%>%
+  #landscape()
+```
+
+```{r nutMap, echo = FALSE, eval = FALSE, fig.cap = "Spatial Distribution of Acute Undernutrition Prevalence", fig.width = 12, fig.height = 6, fig.align = "center", fig.pos = "H", fig.show = "hold", fig.retina = 1}
+par(mar = c(0, 0, 0 ,0), mfrow = c(2, 3))
+
+plot(nutBaseGB, lty = 0, col = rev(map.palette(n = 101))[(nutBaseGB[["gam"]] * 100) + 1])
+title(main = "Baseline: Global acute malnutrition by MUAC", cex = 2, line = -1)
+
+plot(nutBaseGB, lty = 0, col = rev(map.palette(n = 101))[(nutBaseGB[["mam"]] * 100) + 1])
+title(main = "Baseline: Moderate acute malnutrition by MUAC", cex = 2, line = -1)
+
+plot(nutBaseGB, lty = 0, col = rev(map.palette(n = 101))[(nutBaseGB[["sam"]] * 100) + 1])
+title(main = "Baseline: Severe acute malnutrition by MUAC", cex = 2, line = -1)
+
+plot(gbCovHex, lty = 0, col = rev(map.palette(n = 101))[(gbCovHex[["gam.muac"]] * 100) + 1])
+title(main = "Endline: Global acute malnutrition by MUAC", cex = 2, line = -1)
+
+plot(gbCovHex, lty = 0, col = rev(map.palette(n = 101))[(gbCovHex[["mam.muac"]] * 100) + 1])
+title(main = "Endline: Moderate acute malnutrition by MUAC", cex = 2, line = -1)
+
+plot(gbCovHex, lty = 0, col = rev(map.palette(n = 101))[(gbCovHex[["sam.muac"]] * 100) + 1])
+title(main = "Endline: Severe acute malnutrition by MUAC", cex = 2, line = -1)
+```
+
+\newpage
+
+## Acute undernutrition screening coverage
+
+Screening coverage is very low for both Monrovia and Grand Bassa as shown in Figure \@ref(fig:screen1) and Table \@ref(tab:screen2) and spatial distribution is low across all areas of both programme areas as shown in the maps in Figure \@ref(fig:screenMap).
+
+```{r screen1, echo = FALSE, eval = TRUE, fig.cap = "Acute undernutrition screening coverage", fig.height = 8, fig.width = 10, fig.align = "center", fig.pos = "H", fig.retina = 1}
+screenEst <- read.csv("data/screenEst.csv")
+x <- screenEst
+
+x <- x[x$indicator %in% c("muacScreen", "oedemaScreen"), ]
+
+varNames <- c("Child MUAC measured in the past month",
+              "Child MUAC measured in the past month",
+              "Child checked for oedema in the past month",
+              "Child checked for oedema in the past month")
+
+x <- data.frame(x[ , c("county", "indicator")], df = "screenDF", varNames, x[ , c("estimate", "lcl", "ucl")])
+names(x)[2] <- "varLabel"
+
+x$county <- ifelse(x$county == "Monrovia", "Greater Monrovia", x$county)
+x$varLabel <- c(rep("muac.scren", 2), rep("oedema.screen", 2))
+
+x <- data.frame(round = "Baseline", x)
+
+## Endline data
+y <- screenBoot[screenBoot$varLabel %in% c("muac.screen", "oedema.screen"), ]
+y$varNames <- rep(unique(varNames), 2)
+
+y <- data.frame(round = "Endline", y)
+
+## Concatenate
+screenDF <- data.frame(rbind(x, y))
+
+screenDF$county <- factor(screenDF$county, levels = c("Greater Monrovia", "Grand Bassa"))
+screenDF$varNames <- factor(screenDF$varNames, levels = unique(varNames))
+
+ggplot(data = screenDF, mapping = aes(x = round, y = estimate * 100)) +
+  geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
+  facet_grid(county ~ varNames) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(from = 0, to = 100, by = 20)) +
+  themeSettings +
+  theme(strip.text.x = element_text(size = 12))
+```
+
+```{r screen2, echo = FALSE, eval = TRUE}
+x <- screenEst[screenEst$county == "Monrovia" & screenEst$indicator %in% c("muacScreen", "oedemaScreen"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+y <- screenBoot[screenBoot$county == "Greater Monrovia" & screenBoot$varLabel %in% c("muac.screen", "oedema.screen"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+gm <- data.frame(x, y[ , c("estimate", "lcl", "ucl")])
+gm$indicator <- unique(varNames)
+
+x <- screenEst[screenEst$county == "Grand Bassa" & screenEst$indicator %in% c("muacScreen", "oedemaScreen"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+y <- screenBoot[screenBoot$county == "Grand Bassa" & screenBoot$varLabel %in% c("muac.screen", "oedema.screen"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+gb <- data.frame(x, y[ , c("estimate", "lcl", "ucl")])
+gb$indicator <- unique(varNames)
+
+allTab <- data.frame(gm, gb[ , 2:ncol(gb)])
+
+kable(x = allTab,
+      caption = "Acute undernutrition screening coverage",
+      booktabs = TRUE,
+      col.names = linebreak(c("Indicator", rep(c("Est\n(\\%)", "95\\%\nLCL", "95\\%\nUCL"), 4)),
+                            align = "c"),
+      row.names = FALSE,
+      escape = FALSE,
+      format = "latex") %>%
+  row_spec(row = 0, bold = TRUE) %>%
+  column_spec(column = 2:ncol(allTab), monospace = TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
+  add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
+  add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE) #%>%
+  #landscape()
+```
+
+```{r screenMap, echo = FALSE, eval = FALSE, fig.cap = "Spatial Distribution of Acute Undernutrition Screening Coverage", fig.width = 6, fig.height = 4, fig.align = "center", fig.pos = "H", fig.show = "hold", fig.retina = 1}
+screenPolyGM <- readOGR(dsn = "data/screenPolyGM", layer = "screenPolyGM", verbose = FALSE)
+
+screenGeomGM <- fortify(screenPolyGM)
+
+screenPolyGM@data$id <- row.names(screenPolyGM)
+
+screenGeomGM <- merge(screenGeomGM, screenPolyGM@data, by = "id")
+
+screenGeomGM <- gather(screenGeomGM, key = "indicator", value = "estimate", screen1:screen3)
+
+screenGeomGM$indicator <- factor(screenGeomGM$indicator)
+
+screenGeomGM <- transform(screenGeomGM, 
+                          indicator = c("MUAC screening in\nthe past month", 
+                                        "Oedema screening in\nthe past month",
+                                        "MUAC and oedema screening\nin the past month")[as.numeric(indicator)])
+
+screenGeomGM$indicator <- factor(screenGeomGM$indicator, 
+                                 levels = c("MUAC screening in\nthe past month", 
+                                            "Oedema screening in\nthe past month",
+                                            "MUAC and oedema screening\nin the past month"))
+
+ggplot(data = screenGeomGM, 
+       aes(x = long, y = lat, group = group, fill = estimate)) +
+  geom_polygon() +
+  scale_fill_gradientn(name = "%",
+                       limits = c(0, 0.35), 
+                       breaks = seq(from = 0, to = 0.35, by = .05),
+                       labels = seq(from = 0, to = 35, by = 5),
+                       colours = map.palette(101)) +
+  scale_x_continuous(limits = bbox(greaterMonroviaEA)[1, ], 
+                     breaks = seq(from = bbox(greaterMonroviaEA)[1, 1],
+                                  to = bbox(greaterMonroviaEA)[1, 2],
+                                  by = 0.01)) +
+  scale_y_continuous(limits = bbox(greaterMonroviaEA)[2, ],
+                     breaks = seq(from = bbox(greaterMonroviaEA)[2, 1],
+                                  to = bbox(greaterMonroviaEA)[2, 2],
+                                  by = 0.01)) +
+  facet_grid(county ~ indicator) +
+  labs(x = "", y = "") +
+  themeSettings +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "none")
+
+screenPolyGB <- readOGR(dsn = "data/screenPolyGB", layer = "screenPolyGB", verbose = FALSE)
+
+screenGeomGB <- fortify(screenPolyGB)
+
+screenPolyGB@data$id <- row.names(screenPolyGB)
+
+screenGeomGB <- merge(screenGeomGB, screenPolyGB@data, by = "id")
+
+screenGeomGB <- gather(screenGeomGB, key = "indicator", value = "estimate", screen1:screen3)
+
+screenGeomGB$indicator <- factor(screenGeomGB$indicator)
+
+screenGeomGB <- transform(screenGeomGB, 
+                          indicator = c("MUAC screening in\nthe past month", 
+                                        "Oedema screening in\nthe past month",
+                                        "MUAC and oedema screening\nin the past month")[as.numeric(indicator)])
+
+screenGeomGB$indicator <- factor(screenGeomGB$indicator, 
+                                 levels = c("MUAC screening in\nthe past month", 
+                                            "Oedema screening in\nthe past month",
+                                            "MUAC and oedema screening\nin the past month"))
+
+ggplot(data = screenGeomGB, 
+       aes(x = long, y = lat, group = group, fill = estimate)) +
+  geom_polygon() +
+  scale_fill_gradientn(name = "%", 
+                       limits = c(0, 0.35), 
+                       breaks = seq(from = 0, to = 0.35, by = .05),
+                       labels = seq(from = 0, to = 35, by = 5),
+                       colours = map.palette(101)) +
+  scale_x_continuous(limits = bbox(grandBassaEA)[1, ],
+                     breaks = seq(from = bbox(grandBassaEA)[1, 1],
+                                  to = bbox(grandBassaEA)[1, 2],
+                                  by = 0.1)) +
+  scale_y_continuous(limits = bbox(grandBassaEA)[2, ],
+                     breaks = seq(from = bbox(grandBassaEA)[2, 1],
+                                  to = bbox(grandBassaEA)[2, 2],
+                                  by = 0.1)) +
+  facet_grid(county ~ indicator) +
+  labs(x = "", y = "") +
+  themeSettings +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        legend.position = "bottom")
+```
+
+\newpage
+
+## CMAM Coverage
+
+Case-finding effectiveness in both Monrovia and Grand Bassa are low (see Figure \@ref(fig:cmam1) and Table \@ref(tab:cmam2)) with Monrovia having a higher rate at about 31% compared to 6% in Grand Bassa. Treatment coverage is at 55% in Monrovia which is an improvement from previous coverage estimates for the area but Grand Bassa only managed to get 18% treatment coverage.
+
+```{r cmam1plot, echo = FALSE, eval = TRUE, fig.cap = "CMAM coverage", fig.height = 8, fig.width = 8, fig.align = "center", fig.pos = "H", fig.retina = 1}
+coverageEst <- read.csv("data/coverageEst.csv")
+
+x <- coverageEst
+x <- x[x$indicator %in% c("point", "treatment"), ]
+
+varNames <- c("Case-finding effectiveness",
+              "Treatment coverage",
+              "Case-finding effectiveness",
+              "Treatment coverage")
+
+x <- data.frame(x[ , c("county", "indicator")], df = "cmamDF", varNames, x[ , c("estimate", "lcl", "ucl")])
+names(x)[2] <- "varLabel"
+x$varLabel <- c("cf", "tc", "cf", "tc")
+x$county <- ifelse(x$county == "Monrovia", "Greater Monrovia", x$county)
+x <- data.frame(round = "Baseline", x)
+
+## Endline data
+y <- cmamEst[cmamEst$varLabel %in% c("cf", "tc"), ]
+y$varNames <- rep(unique(varNames), 2)
+
+y <- data.frame(round = "Endline", y)
+
+## Concatenate
+cmamDF <- data.frame(rbind(x, y))
+
+cmamDF$county <- factor(cmamDF$county, levels = c("Greater Monrovia", "Grand Bassa"))
+cmamDF$varNames <- factor(cmamDF$varNames, levels = unique(varNames))
+
+ggplot(data = cmamDF, mapping = aes(x = round, y = estimate * 100)) +
+  geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
+  facet_grid(county ~ varNames) +
+  labs(x = "", y = "%") +
+  scale_y_continuous(limits = c(0, 100),
+                     breaks = seq(from = 0, to = 100, by = 20)) +
+  themeSettings +
+  theme(strip.text.x = element_text(size = 12))
+```
+
+```{r cmam1table, echo = FALSE, eval = TRUE}
+x <- coverageEst
+x <- coverageEst[coverageEst$county == "Monrovia" & coverageEst$indicator %in% c("point", "treatment"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(x[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+y <- cmamEst[cmamEst$county == "Greater Monrovia" & cmamEst$varLabel %in% c("cf", "tc"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+gm <- data.frame(x, y[ , c("estimate", "lcl", "ucl")])
+gm$indicator <- c("Case-finding effectiveness", "Treatment coverage")
+
+
+x <- coverageEst[coverageEst$county == "Grand Bassa" & coverageEst$indicator %in% c("point", "treatment"), c("indicator", "estimate", "lcl", "ucl")]
+x[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+y <- cmamEst[cmamEst$county == "Grand Bassa" & cmamEst$varLabel %in% c("cf", "tc"), c("estimate", "lcl", "ucl")]
+y[ , c("estimate", "lcl", "ucl")] <- round(y[ , c("estimate", "lcl", "ucl")] * 100, digits = 2)
+gb <- data.frame(x, y[ , c("estimate", "lcl", "ucl")])
+gb$indicator <- c("Case-finding effectiveness", "Treatment coverage")
+
+allTab <- data.frame(gm, gb[ , 2:ncol(gb)])
+
+kable(x = allTab,
+      caption = "CMAM coverage",
+      booktabs = TRUE,
+      col.names = linebreak(c("Indicator", rep(c("Est\n(\\%)", "95\\%\nLCL", "95\\%\nUCL"), 4)),
+                            align = "c"),
+      row.names = FALSE,
+      escape = FALSE,
+      format = "latex") %>%
+  row_spec(row = 0, bold = TRUE) %>%
+  kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
+  add_header_above(c(" " = 1, "Monrovia" = 3, "Grand Bassa" = 3), bold = TRUE)
+```
+
+The spatial distribution of CMAM coverage (see Figure \@ref(fig:cmamMap)) shows high levels of coverage throughout most of Monrovia but with significant areas of low coverage in the western and southeastern sections. For Grand Bassa, coverage is low throughout most of Grand Bassa but with pockets of high coverage in the western area of the county.
+
+```{r cmamMap1, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of CMAM coverage in Greater Monrovia", fig.width = 10, fig.height = 8, fig.align = "center", fig.pos = "H"}
+x <- cmamBaseGM
+x$county <- "Greater Monrovia"
+names(x) <- c("county", "cf", "tc")
+x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
+xGeom <- fortify(x)
+xGeom <- merge(xGeom, x@data, by = "id")
+
+y <- subset(gmCovHex, select = c(county, cf, tc))
+y$county <- "Greater Monrovia"
+y@data <- data.frame(id = row.names(y), round = "Endline", y@data)
+yGeom <- fortify(y)
+yGeom <- merge(yGeom, y@data, by = "id")
+
+xyGeom <- data.frame(rbind(xGeom, yGeom))
+xyGeom <- pivot_longer(data = xyGeom, cols = c(cf, tc), names_to = "indicator", values_to = "estimate")
+
+xyGeom$indicator <- factor(x = xyGeom$indicator,
+                            levels = c("cf", "tc"),
+                            labels = c("Case-finding effectiveness",
+                                       "Treatment coverage"))
+
+ggplot(data = xyGeom, 
+       aes(x = long, y = lat, group = group, fill = estimate)) +
+  geom_polygon() +
+  scale_fill_gradientn(name = "%",
+                       limits = c(0, 1), 
+                       breaks = seq(from = 0, to = 1, by = .2),
+                       labels = seq(from = 0, to = 100, by = 20),
+                       colours = map.palette(101)) +
+  scale_x_continuous(limits = bbox(greaterMonroviaEA)[1, ], 
+                     breaks = seq(from = bbox(greaterMonroviaEA)[1, 1],
+                                  to = bbox(greaterMonroviaEA)[1, 2],
+                                  by = 0.01)) +
+  scale_y_continuous(limits = bbox(greaterMonroviaEA)[2, ],
+                     breaks = seq(from = bbox(greaterMonroviaEA)[2, 1],
+                                  to = bbox(greaterMonroviaEA)[2, 2],
+                                  by = 0.01)) +
+  facet_grid(round ~ indicator) +
+  labs(x = "", y = "") +
+  themeSettings +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
+```
+
+```{r cmamMap2, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of CMAM coverage in Grand Bassa", fig.width = 10, fig.height = 8, fig.align = "center", fig.pos = "H"}
+x <- cmamBaseGB
+names(x) <- c("county", "cf", "tc")
+x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
+xGeom <- fortify(x)
+xGeom <- merge(xGeom, x@data, by = "id")
+
+y <- subset(gbCovHex, select = c(county, cf, tc))
+y@data <- data.frame(id = row.names(y), round = "Endline", y@data)
+yGeom <- fortify(y)
+yGeom <- merge(yGeom, y@data, by = "id")
+
+xyGeom <- data.frame(rbind(xGeom, yGeom))
+xyGeom <- pivot_longer(data = xyGeom, cols = c(cf, tc), names_to = "indicator", values_to = "estimate")
+
+xyGeom$indicator <- factor(x = xyGeom$indicator,
+                            levels = c("cf", "tc"),
+                            labels = c("Case-finding effectiveness",
+                                       "Treatment coverage"))
+
+ggplot(data = xyGeom, 
+       aes(x = long, y = lat, group = group, fill = estimate)) +
+  geom_polygon() +
+  scale_fill_gradientn(name = "%",
+                       limits = c(0, 1), 
+                       breaks = seq(from = 0, to = 1, by = .2),
+                       labels = seq(from = 0, to = 100, by = 20),
+                       colours = map.palette(101)) +
+  scale_x_continuous(limits = bbox(grandBassaEA)[1, ], 
+                     breaks = seq(from = bbox(grandBassaEA)[1, 1],
+                                  to = bbox(grandBassaEA)[1, 2],
+                                  by = 0.01)) +
+  scale_y_continuous(limits = bbox(grandBassaEA)[2, ],
+                     breaks = seq(from = bbox(grandBassaEA)[2, 1],
+                                  to = bbox(grandBassaEA)[2, 2],
+                                  by = 0.01)) +
+  facet_grid(round ~ indicator) +
+  labs(x = "", y = "") +
+  themeSettings +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks = element_blank())
+```
+
+For SAM cases not covered by the programme, Figure \@ref(fig:cmam3) summarises the reasons for non-coverage.
+
+```{r cmam3, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not being in CMAM programme", out.height = "16cm", out.width = "8cm", fig.show = "hold", fig.pos = "H", fig.align = "center", fig.retina = 1}
+barriersEst <- read.csv("data/barriersCount.csv")
+
+x <- barriersEst[barriersEst$indicator %in% c("q2", "q3", paste("q4a.q4", letters[1:18], sep = "")) & barriersEst$county == "Monrovia", ]
+x <- x[x$count != 0, ]
+x$indicator <- factor(x$indicator, levels = x$indicator[order(x$count, decreasing = TRUE)])
+
+y <- barriersEst[barriersEst$indicator %in% c("q2", "q3", paste("q4a.q4", letters[1:18], sep = "")) & barriersEst$county == "Grand Bassa", ]
+y <- y[y$count != 0, ]
+y$indicator <- factor(y$indicator, levels = y$indicator[order(y$count, decreasing = TRUE)])
+
+ggplot(data = x, aes(x = indicator, y = count)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "Count") +
+  scale_x_discrete(labels = c("Not aware of\ntreatment programme", 
+                              "Does not recognise that\nchild is sick/undernourished",
+                              "No time/too busy",
+                              "Mother brought child to\nclinic but was not measured",
+                              "Too far",
+                              "Out of stock",
+                              "Lack of money to pay\nfor transport")) +
+  scale_y_continuous(limits = c(0, max(barriersEst$count)), breaks = seq(from = 0, to = max(barriersEst$count), by = 2)) +
+  facet_wrap( ~ county) +
+  coord_flip() +
+  themeSettings +
+  theme(axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12))
+
+ggplot(data = y, aes(x = indicator, y = count)) +
+  geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
+  labs(x = "", y = "Count") +
+  scale_x_discrete(labels = c("Not aware of\ntreatment programme", 
+                              "Too far",
+                              "Does not recognise that child is\nsick/undernourished",
+                              "Mother brought child to clinic but\nwas not measured",                                                                "Lack of money to pay\nfor transport",   
+                              "No time/too busy",
+                              "Out of stock",
+                              "Mother ashamed or\nshy about coming",
+                              "There is no one else to take care\nof other siblings",
+                              "The child has been rejected by the\nprogramme already",
+                              "Husband refused",
+                              "Heard that treatment\ncauses diarrhoea")) + 
+  scale_y_continuous(limits = c(0, max(barriersEst$count)), breaks = seq(from = 0, to = max(barriersEst$count), by = 2)) +
+  facet_wrap( ~ county) +
+  coord_flip() +
+  themeSettings +
+  theme(axis.text.y = element_text(size = 10),
+        axis.text.x = element_text(size = 12))
+```
+
+# Discussion
+
+The results of the coverage assessment of direct nutrition interventions in Liberia specifically in Monrovia and Grand Bassa indicate various levels of disparity in coverage both between the programme areas assessed and within the programme areas assessed.
+
+Long-standing programmes such as IFA, IYCF counselling and vitamin A supplementation have performed fairly well in terms of coverage. The majority of women and children targeted by these programmes are knowledgeable of the programme and are beneficiaries of the programme. Years of implementation complemented by the level of support and investment by the government and its partners seem to have paid dividends in allowing for these programmes to reach almost all of their targeted beneficiaries. However, there is still much room for improvement and the current coverage levels can still be improved and increased.
+
+For IFA supplementation, the programme has been able to reach most mothers and has been successful in getting them to take IFA supplements. However, the key challenge for the programme now is to keep mothers taking the tablets for the recommended period of time (at least 90 days). Whilst the survey did not collect data on mother's reasons for stopping IFA tablet consumption, the most common reason for not continuing at this early stage is because of side effects caused by the IFA tablets. Given that contact with health care services during pregnancy is high, it would be good to review existing guidance provided through ANC regarding the intake of IFA and to see whether relevant and appropriate information on correct usage of IFA and its known side effects and ways by which to minimise them are included and/or emphasised.
+
+For IYCF counselling, the survey only assessed knowledge and attendance of IYCF counselling. The natural next level in the coverage hierarchy is whether mothers practice what they have been taught. The most straightforward way of doing so would be assessing IYCF practices as these are the key behaviours that are targeted by the counselling. If this was to be considered, however, UNICEF and its partners would have to take into account the fact that current standard IYCF indicators can only be assessed through big sample surveys such as DHS and MICS. Yet these surveys would most likely not provide the same level of detail and information as current assessment. However, there are small sample alternatives to the standard IYCF indicators such as the Infant and Child Feeding Index (ICFI) indicator set [@Guevarra:2016uw].
+
+For vitamin A supplementation, the current figures are relatively lower than the expected indirect coverage estimates produced by government. It would be important to see what the potential reasons for this disparity are and to ensure that vaccination campaigns, to which vitamin A supplementation is generally attached, does not neglect vitamin A supplementation as it seems access to vaccination is the key reason for non-coverage.
+
+Programmes such as MNP and CMAM, on the other hand, show how new and recently scaled-up programmes are still in the process of achieving the highest levels of coverage possible. MNP supplementation which is the newest programme of those assessed is understandably still struggling with coverage at its early stages of implementation. Knowledge of the programme is the key falter point which is typical of a programme at this stage of its evolution. The programme is mainly anchored to the health centre and therefore knowledge and access to it is primarily influenced by mothers' behaviours and attitudes towards seeking care and treatment at the health facility. Given that MNP is aimed at children who are otherwise healthy (not acute malnourished), the current MNP coverage estimates indicate that health-seeking behaviour leading to a visit to a health facility is mainly influenced by whether their children are sick rather than as a way to seek information or participate in promotive and preventive services such as MNP supplementation. Other factors include physical access to health centres. A more community-based approach to MNP supplementation that is integrated with other community-based programmes such as vaccinations and CMAM should be considered as a potential delivery mechanism.
+
+Finally, for CMAM which is not entirely new but still in its early stages of scale-up, the current coverage estimate shows potential disparity between Monrovia and Grand Bassa in terms of the level and intensity of the community aspects of the programme. At baseline, screening and case-finding in Monrovia is better than in Grand Bassa and this can partly explain the difference in treatment coverage between the two areas. However, screening and case-finding is still an issue for both areas at baseline and more so at endline where both screening coverage and treatment coverage have dropped significantly.
+
+Lessons learned from the years of implementation of the IFA and vitamin A programmes can be useful in improving coverage of MNP and CMAM particularly with potential integration of these services into a unified and coherent child health and nutrition programme in Liberia.
+
+# References
+
+
+[^1]: Initial design used both weight-for-height z-score (WHZ) and MUAC criteria for SAM. After first day of data collection, the survey technical team decided to use MUAC only for SAM case-finding during the survey given the length of time it took to perform complete enumeration using WHZ.
+
+[^2]: Similar to a bottleneck framework and consistent with @Tanahashi:1978we hierarchical model of coverage.
+
