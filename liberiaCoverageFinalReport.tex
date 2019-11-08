@@ -89,7 +89,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{06 November 2019}
+    \date{07 November 2019}
 
 \usepackage{booktabs}
 \usepackage[table]{xcolor}
@@ -153,8 +153,8 @@ GAM & Global acute malnutrition\\
 IDW & Inverse distance weighting\\
 \addlinespace
 IFA & Iron-folic acid\\
-IU & Infant and young child feeding\\
-IYCF & International units\\
+IU & International units\\
+IYCF & Infant and young child feeding\\
 MAM & Moderate acute malnutrition\\
 MICS & Multiple indicator cluster survey\\
 \addlinespace
@@ -181,7 +181,7 @@ UNICEF & United Nations Children's Fund\\
 \hypertarget{intro}{%
 \section{Introduction}\label{intro}}
 
-A three-year nutrition programme is currently being implemented in Liberia by UNICEF aimed at tackling child undernutrition in the country. Funded by \href{http://www.powerofnutrition.org}{Power of Nutrition} and \href{https://www.unicef.org.uk}{UNICEF UK}, the programme is being implemented across 15 counties in Liberia starting from January 2017 up to December 2019. The overall aim of the programme is to improve the coverage of direct nutrition interventions or what is commonly termed nutrition-specific interventions, i.e.~interventions or programmes that address the immediate determinants of foetal and child nutrition and development---adequate food and nutrient intake, feeding, caregiving and parenting practices, and low burden of infectious diseases \citep[\citet{Ruel:2013kr}]{Bhutta:2013ks}. The current programme supports the following specific key interventions: 1) \emph{treatment of severe acute malnutrition (SAM) for children 6-59 months}; 2) \emph{vitamin A supplementation for children 6-59 months}; 3) \emph{promotion of appropriate infant and young child feeding (IYCF) practices among pregnant or lactating women}; 4) \emph{multiple micronutrient powder (MNP) supplementation for children 6-23 months}; and, 5) \emph{iron and folic acid (IFA) supplementation for pregnant women}.
+A three-year nutrition programme is currently being implemented in Liberia by UNICEF aimed at tackling child undernutrition in the country. Funded by \href{http://www.powerofnutrition.org}{Power of Nutrition} and \href{https://www.unicef.org.uk}{UNICEF UK}, the programme is being implemented across 15 counties in Liberia starting from January 2017 up to December 2019. The overall aim of the programme is to improve the coverage of direct nutrition interventions or what is commonly termed nutrition-specific interventions, i.e.~interventions or programmes that address the immediate determinants of foetal and child nutrition and development---adequate food and nutrient intake, feeding, caregiving and parenting practices, and low burden of infectious diseases \citep{Bhutta:2013ks, Ruel:2013kr}. The current programme supports the following specific key interventions: 1) \emph{treatment of severe acute malnutrition (SAM) for children 6-59 months}; 2) \emph{vitamin A supplementation for children 6-59 months}; 3) \emph{promotion of appropriate infant and young child feeding (IYCF) practices among pregnant or lactating women}; 4) \emph{multiple micronutrient powder (MNP) supplementation for children 6-23 months}; and, 5) \emph{iron and folic acid (IFA) supplementation for pregnant women}.
 
 To assess the programme's progress towards its overall aim, two coverage assessments have been implemented - the first at the halfway point of the programme and the second at the end. Only two programme areas were selected for the assessments: \emph{Urban Montserrado (Greater Monrovia)} district and \emph{Grand Bassa} county. This report presents the results of these assessments.
 
@@ -191,7 +191,7 @@ To assess the programme's progress towards its overall aim, two coverage assessm
 \hypertarget{sample-design}{%
 \subsection{Survey and sampling design}\label{sample-design}}
 
-The coverage assessment was designed to be spatially representative of each of the two programme areas using a two-stage spatial sampling survey approach. An even spatial distribution of primary sampling units (PSUs) (i.e., villages/city blocks) was selected from across each enumeration area. This approach was used in order to assess coverage and its spatial distribution in order to detect and map heterogeneity of coverage \citep[\citet{Diggle:2014tk}]{Elliott:2004cg}. PSUs were selected based on their proximity to centroids of a hexagonal grid laid over the two selected programme areas resulting in a triangular irregular network \citep[\citet{Elliot:2000vs}]{Isaaks:1989uk}. A complete enumeration of children 6-59 months old from \(m = 30\) PSUs per programme area was performed in order to find all children who are SAM using mid-upper arm circumference (MUAC)\footnote{Initial design used both weight-for-height z-score (WHZ) and MUAC criteria for SAM. After first day of data collection, the survey technical team decided to use MUAC only for SAM case-finding during the survey given the length of time it took to perform complete enumeration using WHZ.} and bipedal oedema for the CMAM programme coverage assessment Within this cohort of children 6-59 months, a systematic sample of children and their mothers were selected for the coverage assessment of the other four nutrition-specific interventions. A total of \(n = 192\) children 6-23 months old for the MNP supplementation coverage, children 6-59 months for vitamin A supplementation coverage and mothers of children 6-59 months for the IYCF counselling coverage and IFA coverage were systematically selected.
+The coverage assessment was designed to be spatially representative of each of the two programme areas using a two-stage spatial sampling survey approach. An even spatial distribution of primary sampling units (PSUs) (i.e., villages/city blocks) was selected from across each enumeration area. This approach was used in order to assess coverage and its spatial distribution in order to detect and map heterogeneity of coverage \citep[\citet{Diggle:2014tk}]{Elliott:2004cg}. PSUs were selected based on their proximity to centroids of a hexagonal grid laid over the two selected programme areas resulting in a triangular irregular network \citep{Isaaks:1989uk, Elliot:2000vs}. A complete enumeration of children 6-59 months old from \(m = 30\) PSUs per programme area was performed in order to find all children who are SAM using mid-upper arm circumference (MUAC)\footnote{Initial design used both weight-for-height z-score (WHZ) and MUAC criteria for SAM. After first day of data collection, the survey technical team decided to use MUAC only for SAM case-finding during the survey given the length of time it took to perform complete enumeration using WHZ.} and bipedal oedema for the CMAM programme coverage assessment Within this cohort of children 6-59 months, a systematic sample of children and their mothers were selected for the coverage assessment of the other four nutrition-specific interventions. A total of \(n = 192\) children 6-23 months old for the MNP supplementation coverage, children 6-59 months for vitamin A supplementation coverage and mothers of children 6-59 months for the IYCF counselling coverage and IFA coverage were systematically selected.
 
 \hypertarget{indicators}{%
 \subsection{Indicators}\label{indicators}}
@@ -418,7 +418,7 @@ The coverage form was developed in such a way that it implements the survey as p
 \hypertarget{data-analyses}{%
 \subsection{Data analyses}\label{data-analyses}}
 
-Data analysis was performed using R language for statistical computing \citep{R:2018}.
+Data analysis was performed using R language for statistical computing \citep{R:2019rr}.
 
 \hypertarget{analytical-approach-for-estimating-coverage-indicators}{%
 \subsubsection{Analytical approach for estimating coverage indicators}\label{analytical-approach-for-estimating-coverage-indicators}}
@@ -457,7 +457,7 @@ The principal advantages of using a bootstrap estimator are:
 \hypertarget{analytical-approach-for-mapping-coverage-indicators}{%
 \subsubsection{Analytical approach for mapping coverage indicators}\label{analytical-approach-for-mapping-coverage-indicators}}
 
-The indicator mapping will create a surface map of indicator values using spatial interpolation. There are various approaches and methods of spatial interpolation, the main differences are determined by the weights applied to the point dataset to estimate values at each of the unknown points of the surface map. For the Liberia coverage survey, spatial interpolation will be performed using the inverse distance weighting (IDW) method. As the name implies, the IDW method uses weights that are inversely proportional to the distance of a point being estimated from the sampling point locations \citep{isaaks1989applied, diggle2007mbg, diggle2013statistical}. This can be mathematically demonstrated as follows:
+The indicator mapping will create a surface map of indicator values using spatial interpolation. There are various approaches and methods of spatial interpolation, the main differences are determined by the weights applied to the point dataset to estimate values at each of the unknown points of the surface map. For the Liberia coverage survey, spatial interpolation will be performed using the inverse distance weighting (IDW) method. As the name implies, the IDW method uses weights that are inversely proportional to the distance of a point being estimated from the sampling point locations \citep{Isaaks:1989uk, diggle2007mbg, diggle2013statistical}. This can be mathematically demonstrated as follows:
 
 ~
 
