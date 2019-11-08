@@ -259,36 +259,7 @@ There are no standard indicators for IYCF counselling hence indicators were devi
 
 ## Survey instrument
 
-The following are sample/template questionnaires used for the two types of surveys that will be implemented.
-
-### CMAM coverage survey instruments
-
-The CMAM coverage surveys primarily used two forms. The first form was used to collect coverage data from SAM children found during the survey. Given that this survey used house-to-house/door-to-door sampling for stage 2, then it was necessary to record all data from all children that were measured with MUAC and oedema. The following tabular form was used for this purpose:
-
-```{r samform, echo = FALSE, fig.cap = "SAM coverage survey sample/template form", out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
-knitr::include_graphics("forms/samForm.png")
-```
-
-The data collected using the tabular forms allows for estimation of coverage. They do not, however, allow one to know the reasons for coverage failure. To collect this data we applied a “barriers” questionnaire to the mothers/carers of uncovered SAM cases. Here is an example of a barriers questionnaire:
-
-\newpage
-
-```{r sambarriers, echo = FALSE, fig.cap = "SAM coverage barriers survey sample/template form", out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
-knitr::include_graphics("forms/samBarriersForm.png")
-```
-
-\newpage
-
-### Survey for children 6-59 months and their mothers
-
-For the survey for children 6-59 months, following is a sample/template questionnaire used. 
-
-```{r childform1, echo = FALSE, fig.cap = "Children 6-59 months old and their mothers survey sample/template form", out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
-knitr::include_graphics("forms/childForm1.png")
-knitr::include_graphics("forms/childForm2.png")
-knitr::include_graphics("forms/childForm3.png")
-knitr::include_graphics("forms/childForm4.png")
-```
+Two sets of survey instruments were produced for the survey. The first is for the CMAM coverage component and the second one is for the survey for children 6-59 months and their mothers. The sample/template questionnaires used can be found in Annex A.
 
 ### Using Open Data Kit
 
@@ -350,6 +321,12 @@ The principal advantages of using a bootstrap estimator are:
 
 * The method allows estimation of the sampling distribution of almost any statistic using only simple computational methods.
 
+\newpage
+
+```{r indicators31, echo = FALSE, fig.cap = "The blocked weighted bootstrap", fig.align = "center", fig.pos = "H", fig.retina = 1}
+knitr::include_graphics("figures/bbw.png")
+```
+
 ### Analytical approach for mapping coverage indicators
 
 The indicator mapping approach for this survey created a surface map of indicator values using spatial interpolation. There are various approaches and methods of spatial interpolation, the main differences are determined by the weights applied to the point dataset to estimate values at each of the unknown points of the surface map. For the Liberia coverage survey, spatial interpolation was performed using the inverse distance weighting (IDW) method. As the name implies, the IDW method uses weights that are inversely proportional to the distance of a point being estimated from the sampling point locations [@Isaaks:1989uk; @diggle2007mbg; @diggle2013statistical]. This can be mathematically demonstrated as follows:
@@ -363,14 +340,6 @@ d_1 \ldots d_n & ~ = ~ \text{distances from each } n \text{ sampling points to e
 p & ~ = ~ \text{power of the distance} \\
 v_1 \ldots v_n & ~ = ~ \text{sample values}
 \end{aligned}$$
-
-\newpage
-
-```{r indicators31, echo = FALSE, fig.cap = "The blocked weighted bootstrap", fig.align = "center", fig.pos = "H", fig.retina = 1}
-knitr::include_graphics("figures/bbw.png")
-```
-
-\newpage
 
 The power of the distance `p` is an important aspect of the IDW method for point estimation. The influence of `p` to the weights applied to the point estimation is such that as `p` approaches 0, the weights become more similar, thereby giving more weight to the nearest sample values.  As `p` approaches $\infty$, the weights become more different from each other, thereby giving more weight to the closest sample. The power of the distance `p` has been traditionally set at 2 for convenience and ease of calculations. For the Liberia Coverage Survey, `p` was initially set at 2 and then cross-validation (see below) was applied to optimise `p` to a value that minimises the estimation errors at each of the sampling point locations.
 
@@ -1231,7 +1200,7 @@ ggplot(data = xyGeom,
 
 Vitamin A supplementation coverage in Greater Monrovia and Grand Bassa is shown in Figure \@ref(fig:vit1plot). There were 82% of children 6-59 months in Greater Monrovia who received vitamin A supplementation in the past 6 months at baseline. This rate dropped slightly at endline to 78% though this difference is not statistically significant. In Grand Bassa, about 84% of children 6-59 months received vitamin A supplementation in the past 6 months at baseline. This dropped slightly to about 82% at endline though the difference is not statistically significant.
 
-```{r vit1plot, echo = FALSE, eval = TRUE, fig.cap = "Vitamin A supplementation coverage in Greater Monrovia", fig.height = 8, fig.width = 6, fig.align = "center", fig.pos = "H"}
+```{r vit1plot, echo = FALSE, eval = TRUE, fig.cap = "Vitamin A supplementation coverage in Greater Monrovia", fig.height = 6, fig.width = 4, fig.align = "center", fig.pos = "H"}
 vitEst <- read.csv("data/vitEst.csv")
 x <- vitEst
 
@@ -1915,7 +1884,7 @@ x <- x[x$count != 0, ]
 baselineGM <- ggplot(data = x, aes(x = reorder(indicator, -count), y = count)) +
   geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
   labs(x = "", y = "Count") +
-  scale_y_continuous(limits = c(0, 20), breaks = seq(from = 0, to = 20, by = 2)) +
+  scale_y_continuous(limits = c(0, 20), breaks = seq(from = 0, to = 20, by = 4)) +
   coord_flip() +
   themeSettings
 
@@ -1948,7 +1917,7 @@ x <- x[x$count != 0, ]
 endlineGM <- ggplot(data = x, aes(x = reorder(indicator, -count), y = count)) +
   geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
   labs(x = "", y = "Count") +
-  scale_y_continuous(limits = c(0, 20), breaks = seq(from = 0, to = 20, by = 2)) + 
+  scale_y_continuous(limits = c(0, 20), breaks = seq(from = 0, to = 20, by = 4)) + 
   coord_flip() +
   themeSettings
 
@@ -1979,7 +1948,7 @@ x <- x[x$count != 0, ]
 baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -count), y = count)) +
   geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
   labs(x = "", y = "Count") +
-  scale_y_continuous(limits = c(0, 24), breaks = seq(from = 0, to = 24, by = 2)) +
+  scale_y_continuous(limits = c(0, 24), breaks = seq(from = 0, to = 24, by = 4)) +
   coord_flip() +
   themeSettings
 
@@ -2012,7 +1981,7 @@ x <- x[x$count != 0, ]
 endlineGB <- ggplot(data = x, aes(x = reorder(indicator, -count), y = count)) +
   geom_col(col = "#993300", fill = alpha("#993300", 0.8), width = 0.7) +
   labs(x = "", y = "Count") +
-  scale_y_continuous(limits = c(0, 24), breaks = seq(from = 0, to = 24, by = 2)) + 
+  scale_y_continuous(limits = c(0, 24), breaks = seq(from = 0, to = 24, by = 4)) + 
   coord_flip() +
   themeSettings
 
@@ -2044,8 +2013,42 @@ Finally, for CMAM which is not entirely new but still in its early stages of sca
 
 Lessons learned from the years of implementation of the IFA and vitamin A programmes can be useful in improving coverage of MNP and CMAM particularly with potential integration of these services into a unified and coherent child health and nutrition programme in Liberia.
 
-# References
+\newpage
 
+# Annex A: Survey instruments {-}
+
+The following tabular form was used for the CMAM coverage assessment:
+
+```{r samform, echo = FALSE, out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
+knitr::include_graphics("forms/samForm.png")
+```
+
+The data collected using the tabular forms allows for estimation of coverage. They do not, however, allow one to know the reasons for coverage failure. To collect this data we applied a “barriers” questionnaire to the mothers/carers of uncovered SAM cases. Here is an example of a barriers questionnaire:
+
+\newpage
+
+```{r sambarriers, echo = FALSE, out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
+knitr::include_graphics("forms/samBarriersForm.png")
+```
+
+**CMAM coverage survey instruments**
+
+The CMAM coverage surveys primarily used two forms. The first form was used to collect coverage data from SAM children found during the survey. Given that this survey used house-to-house/door-to-door sampling for stage 2, then it was necessary to record all data from all children that were measured with MUAC and oedema.
+
+**Survey for children 6-59 months and their mothers**
+
+For the survey for children 6-59 months, following is a sample/template questionnaire used. 
+
+```{r childform1, echo = FALSE, out.width = "90%", fig.align = "center", fig.pos = "H", fig.retina = 1}
+knitr::include_graphics("forms/childForm1.png")
+knitr::include_graphics("forms/childForm2.png")
+knitr::include_graphics("forms/childForm3.png")
+knitr::include_graphics("forms/childForm4.png")
+```
+
+\newpage
+
+# References
 
 [^1]: Initial design used both weight-for-height z-score (WHZ) and MUAC and oedema criteria for SAM. However, for the first round of coverage assessments in 2018, the survey technical team decided to use MUAC and oedema only for SAM case-finding during the survey given the length of time it took to perform complete enumeration using WHZ. For the second round of coverage assessments in 2019, WHZ, MUAC and oedema case definitions for SAM were used.
 
