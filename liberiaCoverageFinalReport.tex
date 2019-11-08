@@ -89,7 +89,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{07 November 2019}
+    \date{08 November 2019}
 
 \usepackage{booktabs}
 \usepackage[table]{xcolor}
@@ -103,6 +103,17 @@
 \onehalfspacing
 
 \graphicspath{ {figures/} }
+
+\pagenumbering{gobble}
+
+\usepackage{titling}
+
+\pretitle{%
+  \begin{center}
+  \LARGE
+  \includegraphics{figures/frontCoverEdit.jpg}\\[\bigskipamount]
+}
+\posttitle{\end{center}}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
@@ -121,7 +132,9 @@
 \begin{document}
 \maketitle
 
-\newpage
+\newpage 
+
+\pagenumbering{arabic}
 
 {
 \hypersetup{linkcolor=black}

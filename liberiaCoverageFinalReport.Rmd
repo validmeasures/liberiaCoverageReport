@@ -1,5 +1,5 @@
 ---
-title: \vspace{3.5in}Report on Coverage Assessment of Direct Nutrition Interventions in Liberia
+title: Report on Coverage Assessment of Direct Nutrition Interventions in Liberia
 author: "Valid International"
 date: '`r format(Sys.Date(), "%d %B %Y")`'
 fontsize: 12pt
@@ -488,8 +488,7 @@ kable(x = allTab,
   column_spec(column = 2:ncol(allTab), monospace = TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
   add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
-  add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE) #%>%
-  #landscape()
+  add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE)
 ```
 
 Of the few who have not received IFA tablets in Greater Monrovia and Grand Bassa despite attending ANC during their last pregnancy, the main reasons for not getting IFA tablets are shown in Figure \@ref(fig:ifa2plot)
@@ -594,7 +593,7 @@ plot_grid(baselineGM, endlineGM, baselineGB, endlineGB,
           vjust = 1)
 ```
 
-The spatial distribution of IFA supplementation coverage in Greater Monrovia and Grand Bassa is shown in Figure \@ref(fig:ifa1map). At baseline, IFA supplementation coverage was lowest in the eastern section of Monrovia. At endline, these areas have increased coverage. For Grand Bassa, IFA supplementation coverage was lowest in the southern and eastern parts of the county. At endline, these areas have increased coverage but with new but much smaller hot spots of low coverage in different parts of the county. The maps show the significant faltering in IFA coverage once adequate consumption of IFA is considered.
+The spatial distribution of IFA supplementation coverage in Greater Monrovia and Grand Bassa is shown in Figure \@ref(fig:ifa1map). At baseline, IFA supplementation coverage was lowest in the eastern section of Monrovia. At endline, these areas have increased coverage. For Grand Bassa, IFA supplementation coverage was lowest in the southern and eastern parts of the county. At endline, these areas have increased coverage but with new but much smaller hot spots of low coverage in different parts of the county. The maps for both Greater Monrovia and Grand Bassa show the significant faltering in IFA coverage once adequate consumption of IFA is considered.
 
 ```{r ifa1Map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of IFA supplementation coverage in Greater Monrovia", fig.width = 15, fig.height = 6, fig.align = "center", fig.pos = "H"}
 x <- subset(ifaBaseGM, select = c(county, ifa1, ifa2, ifa3, ifa4, ifa5))
