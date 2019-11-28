@@ -64,6 +64,7 @@ themeMapping <- theme_bw() +
     strip.text.x = element_text(colour = "#247BA0", size = 12, hjust = 0),
     strip.text.y = element_text(colour = "#247BA0", size = 15, hjust = 0),
     legend.key = element_rect(linetype = 0),
+    legend.position = "bottom",
     axis.text.x = element_blank(),
     axis.text.y = element_blank(),
     axis.ticks = element_blank()
@@ -154,13 +155,11 @@ A three-year nutrition programme has been implemented in Liberia by UNICEF aimed
 
 The coverage assessment was implemented as a two-stage spatial sample survey with $m = 30$ primary sampling units per programme area. A complete enumeration of children 6-59 months old from $m = 30$ primary sampling units (PSUs) per programme area was performed in order to find all children who are severe acute malnourished (SAM) using standard case definitions for the community-based management of acute malnutrition (CMAM) programme coverage assessment. Within this cohort of children 6-59 months, a systematic sample of children and their mothers were selected for the coverage assessment of the other four nutrition-specific interventions. A total of at least $n = 192$ children 6-23 months old for the micronutrient powder (MNP) supplementation coverage, children 6-59 months for vitamin A supplementation coverage and mothers of children 6-59 months for the infant and young child feeding (IYCF) counselling coverage and iron and folic acid (IFA) coverage were systematically selected. A set of hierarchical coverage indicators was used to assess coverage of each of the five nutrition-specific programmes. Data was collected using a specifically-designed Open Data Kit (ODK) data collection system. Data was analysed using R language for statistical computing. A blocked-weighted bootstrapping approach was used to estimate the various coverage indicators and to report the corresponding 95% confidence interval. Indicators were also mapped using spatial interpolation using inverse distance weighting.
 
-The results of the coverage assessment of direct nutrition interventions in Liberia specifically in Greater Monrovia and Grand Bassa indicate various levels of disparity in coverage both between the programme areas and within the programme areas assessed. Long-standing programmes such as IFA supplementation, IYCF counselling and vitamin A supplementation have performed fairly well in terms of coverage. The majority of women and children targeted by these programmes are knowledgeable of the programme and are beneficiaries of the programme. Years of implementation complemented by the level of support and investment by the government and its partners seem to have paid dividends in allowing for these programmes to reach almost all of their targeted beneficiaries. However, there is still much room for improvement and the current coverage levels can still be increased.
+The results of the coverage assessment of direct nutrition interventions in Liberia specifically in Greater Monrovia and Grand Bassa indicate various levels of disparity in coverage both between the programme areas and within the programme areas assessed. Long-standing programmes such as IFA supplementation, IYCF counselling and vitamin A supplementation have performed fairly well in terms of coverage. The majority of women and children targeted by these programmes are knowledgeable of the programme and are beneficiaries of the programme. Years of implementation complemented by the level of support and investment by the government and its partners seem to have paid dividends in allowing for these programmes to reach almost all of their targeted beneficiaries. However, there is still room for improvement and the current coverage levels can still be increased to at least the 90% level recommended for maximum health and nutrition impact.
 
-Programmes such as MNP and CMAM, on the other hand, show how new and recently scaled-up programmes are still in the process of achieving the highest levels of coverage possible. MNP supplementation which is the newest programme of those assessed is understandably still struggling with coverage even at endline. Knowledge of the programme and knowlege of how the programme works and its importance for children's health and nutrition is the key falter point which is typical of a programme at this stage of its evolution. The programme is mainly anchored to the health centre and therefore knowledge and access to it is primarily influenced by mothers' behaviours and attitudes towards seeking care and treatment at the health facility. Given that MNP is aimed at children who are otherwise healthy (not acute malnourished), the current MNP coverage estimates indicate that health-seeking behaviour leading to a visit to a health facility is mainly influenced by whether their children are sick rather than as a way to seek information or participate in promotive and preventive services such as MNP supplementation. Other factors include physical access to health centres. A more community-based approach to MNP supplementation that is integrated with other community-based programmes such as vaccinations and CMAM should be considered as a potential delivery mechanism. Screening of children using MUAC can be integrated into vaccination campaigns and children under 2 years old identified as not being acutely malnourished are informed about MNP supplementation programme and ideally provided with the MNP supplements at point of contact.
+Programmes such as MNP and CMAM, on the other hand, show how new and recently scaled-up programmes are still in the process of achieving the highest levels of coverage possible. MNP supplementation which is the newest programme of those assessed is understandably still struggling with coverage even at endline. Knowledge of the programme and knowledge of how the programme works and its importance for children's health and nutrition is the key falter point which is typical of a programme at this stage of its evolution. However, available evidence on similar programmes providing complementary feeding supplements show a much higher awareness and contact coverage at a minimum 1 year after start of programme implementation and typically falters at the effectiveness coverage level. This difference in coverage to other similar programmes elsewhere can be linked to the way the programme in Liberia is being implemented. The programme is mainly anchored to the health centre and therefore knowledge and access to it is primarily influenced by mothers' behaviours and attitudes towards seeking care and treatment at the health facility. Given that MNP is aimed at children who are otherwise healthy (not acute malnourished), the current MNP coverage estimates indicate that health-seeking behaviour leading to a visit to a health facility is mainly influenced by whether their children are sick rather than as a way to seek information or participate in promotive and preventive services such as MNP supplementation. Other factors include physical access to health centres. A more community-based approach to MNP supplementation that is integrated with other community-based programmes such as vaccinations and CMAM should be considered as a potential delivery mechanism. Screening of children using MUAC can be integrated into vaccination campaigns and children under 2 years old identified as not being acutely malnourished are informed about MNP supplementation programme and ideally provided with the MNP supplements at point of contact. These efforts should be coupled with clear behavioural change communication messages on the importance of complementary feeding and how the MNP supplement contributes to the increased quality of complementary feeding with the aim of creating demand for MNP amongst the programme's target beneficiary. Finally, information on access to the programme providing MNP including eligibility criteria and locations where they can receive the MNP should be explained clearly to the potential beneficiaries.
 
-Finally, for CMAM which is not entirely new but still in its early stages of scale-up, the coverage estimates at baseline and endline indicate 1) disparity between Greater Monrovia and Grand Bassa in terms of the level and intensity of the community aspects of the programme; 2) signficant drop in coverage of CMAM in Greater Monrovia given that at baseline its coverage was exemplary for an urban CMAM programme; and, 3) no significant change in coverage of CMAM in Grand Bassa with coverage still remaining unacceptably low. At baseline, screening and case-finding in Greater Monrovia is better than in Grand Bassa and this can partly explain the difference in treatment coverage between the two areas at baseline. At endline, no improvement in screening has happened and the levels of coverage for CMAM in Greater Monrovia has signficantly plummetted. Based on feedback by stakeholders, this has been attributed to government being the main service provider for CMAM in the past year as usual stakeholders that supported government were not engaged due to several programmatic issues. This points to the need for ensuring increased and continued capacity building of government in CMAM and other related interventions so that they can be truly in a position that they can implement and maintain these programmes with or without external support.
-
-Lessons learned from the years of implementation of the IFA and vitamin A programmes can be useful in improving coverage of MNP and CMAM particularly with potential integration of these services into a unified and coherent child health and nutrition programme in Liberia.
+Finally, for CMAM the coverage estimates at baseline and endline indicate 1) disparity between Greater Monrovia and Grand Bassa in terms of the level and intensity of the community aspects of the programme; 2) significant drop in coverage of CMAM in Greater Monrovia given that at baseline its coverage was exemplary for an urban CMAM programme; and, 3) no significant change in coverage of CMAM in Grand Bassa with coverage still remaining unacceptably low. At baseline, screening and case-finding in Greater Monrovia is better than in Grand Bassa and this can partly explain the difference in treatment coverage between the two areas at baseline. At endline, no improvement in screening has happened and the levels of coverage for CMAM has significantly plummeted. Given that screening has remained extremely low at endline compared to baseline in both survey areas, other factors should be looked into for the cause of this significant decline in coverage in Greater Monrovia and the stagnant coverage in Grand Bassa. Review of previous CMAM coverage assessment conducted in Greater Monrovia in 2011 reveal that despite the reported 48.6% period coverage, a relatively high figure for most CMAM programmes particularly for a programme that is being implemented in an urban area, several barriers to coverage were identified the most common of which was lack of awareness of the programme, its services and intended beneficiaries. This was the same key factor elicited in the baseline (where treatment coverage was at 55%) and endline (where treatment coverage dropped to 27%) of the Liberia coverage assessment. With all these factors of screening and awareness being constant since the early stages of the CMAM programme in Liberia, a more basic reason for the significant decrease in coverage in Greater Monrovia is likely. Based on feedback by stakeholders, the CMAM programme in Greater Monrovia has been mainly implemented by government in the past year without the usual support from other stakeholders. The possible effect of this on coverage is more on the day-to-day implementation of the programme particularly with case admission and management. It is recommended that a more nuanced investigation into the CMAM implementation be done in both Greater Monrovia and Grand Bassa to identify issues and for appropriate remedial action be undertaken.
 
 \newpage
 
@@ -323,7 +322,7 @@ The principal advantages of using a bootstrap estimator are:
 
 \newpage
 
-```{r indicators31, echo = FALSE, fig.cap = "The blocked weighted bootstrap", fig.align = "center", fig.pos = "H", fig.retina = 1}
+```{r indicators31, echo = FALSE, fig.cap = "The blocked weighted bootstrap", out.height = "95%", fig.align = "center", fig.pos = "H"}
 knitr::include_graphics("figures/bbw.png")
 ```
 
@@ -741,14 +740,14 @@ kable(x = allTab,
 
 \newpage
 
-Of the few who did not attend IYCF counselling, their main reasons for not attending are presented in \@ref(fig:icf2table). At baseline, mothers not covered by IYCF counselling reported being too busy and timing of IYCF counselling as the main reasons for non-coverage. At endline, timing of IYCF counselling was still an issue but interest in IYCF counselling was reported the most.
+Of the few who did not attend IYCF counselling, their main reasons for not attending are presented in Figure \@ref(fig:icf2table). At baseline, mothers not covered by IYCF counselling reported being too busy and timing of IYCF counselling as the main reasons for non-coverage. At endline, timing of IYCF counselling was still an issue but interest in IYCF counselling was reported the most.
 
 ```{r icf2table, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not attending IYCF counselling", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
 icfEst <- read.csv("data/icfEst.csv")
 x <- icfEst[icfEst$indicator %in% paste("icf2a.", 1:11, sep = "") & icfEst$county == "Monrovia", ]
 x$indicator <- factor(x = x$indicator, labels = c("Timing not convenient",
                                                   "Not interested",
-                                                  "Do not trust counselor",
+                                                  "Do not trust counsellor",
                                                   "Don't think I need it",
                                                   "Did not go to hospital/clinic", 
                                                   "During Ebola period", 
@@ -770,7 +769,7 @@ baselineGM <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estima
 x <- iycfBoot[iycfBoot$varLabel %in% paste("icf2", letters[1:7], sep = "") & iycfBoot$county == "Greater Monrovia", ]
 x$varLabel <- factor(x = x$varLabel, labels = c("Timing not convenient",
                                                 "Not interested",
-                                                "Do not trust counselor",
+                                                "Do not trust counsellor",
                                                 "Don't think I need it",
                                                 "Did not go to hospital",
                                                 "No one told me about it/\nnot invited",
@@ -788,7 +787,7 @@ endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate
 x <- icfEst[icfEst$indicator %in% paste("icf2a.", 1:11, sep = "") & icfEst$county == "Grand Bassa", ]
 x$indicator <- factor(x = x$indicator, labels = c("Timing not convenient",
                                                   "Not interested",
-                                                  "Do not trust counselor",
+                                                  "Do not trust counsellor",
                                                   "Don't think I need it",
                                                   "Did not go to hospital/clinic", 
                                                   "During Ebola period", 
@@ -810,7 +809,7 @@ baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estima
 x <- iycfBoot[iycfBoot$varLabel %in% paste("icf2", letters[1:14], sep = "") & iycfBoot$county == "Grand Bassa", ]
 x$varLabel <- factor(x = x$varLabel, labels = c("Timing not convenient",
                                                 "Not interested",
-                                                "Do not trust counselor",
+                                                "Do not trust counsellor",
                                                 "Don't think I need it",
                                                 "Did not go to hospital",
                                                 "No one told me about it/\nnot invited",
@@ -841,11 +840,9 @@ plot_grid(baselineGM, endlineGM, baselineGB, endlineGB,
           vjust = 1)
 ```
 
-Spatial distribution of IYCF counselling coverage in Greater Monrovia is shown in Figure \@ref(fig:icf1map). IYCF counselling coverage was at its lowest in eastern sections of Greater Monrovia at baseline. These areas have improved coverage at endline. 
+Spatial distribution of IYCF counselling coverage in Greater Monrovia is shown in Figure \@ref(fig:icf1map). IYCF counselling coverage was at its lowest in eastern sections of Greater Monrovia at baseline. These areas have improved coverage at endline. Spatial distribution of IYCF counselling coverage in Grand Bassa is shown in Figure \@ref(fig:icf2map). IYCF counselling coverage was at its lowest in southern sections of Grand Bassa at baseline. These areas have improved coverage at endline but with newer focused areas of low coverage spread throughout the county.
 
-Spatial distribution of IYCF counselling coverage in Grand Bassa is shown in Figure \@ref(fig:icf2map). IYCF counselling coverage was at its lowest in southern sections of Grand Bassa at baseline. These areas have improved coverage at endline but with newer focused areas of low coverage spread throughout the county.
-
-```{r icf1map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of IYCF counselling coverage in Greater Monrovia", fig.width = 8, fig.height = 8, fig.align = "center", fig.pos = "H"}
+```{r icf1map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of IYCF counselling coverage in Greater Monrovia", fig.width = 8, fig.height = 8, out.width = "65%", fig.align = "center", fig.pos = "H"}
 x <- subset(icfBaseGM, select = c(county, icf1, icf2))
 x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
 xGeom <- fortify(x)
@@ -884,7 +881,7 @@ ggplot(data = xyGeom,
   themeMapping
 ```
 
-```{r icf2map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of IYCF counselling coverage in Grand Bassa", fig.width = 8, fig.height = 8, fig.align = "center", fig.pos = "H"}
+```{r icf2map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of IYCF counselling coverage in Grand Bassa", fig.width = 8, fig.height = 8, out.width = "65%", fig.align = "center", fig.pos = "H"}
 x <- subset(icfBaseGB, select = c(county, icf1, icf2))
 x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
 xGeom <- fortify(x)
@@ -1010,7 +1007,7 @@ kable(x = allTab,
 
 The main reasons for not receiving MNP supplements are presented in Figure \@ref(fig:mnp2plot). At baseline, availability of MNP was the main reason for non-coverage. At endline, reasons have shifted more to personal preferences by parents not to have children take the MNP supplement mainly because they think their child doesn't need the supplement. It should be noted, however, that given the coverage results, knowledge, awareness and information about MNP supplementation is the main falter point for coverage and this is reflected in the various reasons conveyed by those not covered.
 
-```{r mnp2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving micronutrient powder", fig.width = 12, fig.height = 8, fig.align = "center", fig.show = "hold", fig.pos = "H"}
+```{r mnp2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving micronutrient powder", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
 mnpEst <- read.csv("data/mnpEst.csv")
 x <- mnpEst[mnpEst$indicator %in% paste("mnp2a.", 1:10, sep = "") & mnpEst$county == "Monrovia", ]
 x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
@@ -1200,7 +1197,7 @@ ggplot(data = xyGeom,
 
 Vitamin A supplementation coverage in Greater Monrovia and Grand Bassa is shown in Figure \@ref(fig:vit1plot). There were 82% of children 6-59 months in Greater Monrovia who received vitamin A supplementation in the past 6 months at baseline. This rate dropped slightly at endline to 78% though this difference is not statistically significant. In Grand Bassa, about 84% of children 6-59 months received vitamin A supplementation in the past 6 months at baseline. This dropped slightly to about 82% at endline though the difference is not statistically significant.
 
-```{r vit1plot, echo = FALSE, eval = TRUE, fig.cap = "Vitamin A supplementation coverage", fig.height = 6, fig.width = 4, fig.align = "center", fig.pos = "H"}
+```{r vit1plot, echo = FALSE, eval = TRUE, fig.cap = "Vitamin A supplementation coverage", fig.height = 4, fig.width = 6, fig.align = "center", fig.pos = "H"}
 vitEst <- read.csv("data/vitEst.csv")
 x <- vitEst
 
@@ -1229,7 +1226,7 @@ vitDF$varNames <- factor(vitDF$varNames, levels = unique(varNames))
 
 ggplot(data = vitDF, mapping = aes(x = round, y = estimate * 100)) +
   geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
-  facet_grid(county ~ varNames) +
+  facet_grid(. ~ county) +
   labs(x = "", y = "%") +
   scale_y_continuous(limits = c(0, 100),
                      breaks = seq(from = 0, to = 100, by = 20)) +
@@ -1428,7 +1425,7 @@ plot_grid(baselineGM, endlineGM, baselineGB, endlineGB,
 
 At endline, weight and height measurements were also measured. This allowed for prevalence of stunting/stuntedness to be assessed as presented in Figure \@ref(fig:stunt1plot) and Table \@ref(tab:stunt1table). Global stunting/stuntedness is at 22% in Greater Monrovia of which about 15% are children with moderate stunting/stuntedness and about 8% severe. In Grand Bassa, global stunting/stuntedness is significantly higher at a little over 44%, 24% of which are children with moderate stunting/stuntedness and about 20% severe.
 
-```{r stunt1plot, echo = FALSE, eval = TRUE, fig.cap = "Stunting/stuntedness prevalence", fig.height = 6, fig.width = 12, fig.align = "center", fig.pos = "H", fig.retina = 1}
+```{r stunt1plot, echo = FALSE, eval = TRUE, fig.cap = "Stunting/stuntedness prevalence", fig.height = 6, fig.width = 12, fig.align = "center", fig.pos = "H"}
 varNames <- c("Global stunting/stuntedness",
               "Global stunting/stuntedness",
               "Moderate stunting/stuntedness",
@@ -1482,6 +1479,7 @@ kable(x = xy,
       escape = FALSE,
       format = "latex") %>%
   row_spec(row = 0, bold = TRUE) %>%
+  column_spec(column = 2:ncol(xy), monospace = TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
   add_header_above(c(" " = 1, "Greater Monrovia" = 3, "Grand Bassa" = 3))
 ```
@@ -1492,7 +1490,7 @@ kable(x = xy,
 
 Prevalence of acute undernutrition is presented in Figure \@ref(fig:nut1plot) and Table \@ref(tab:nut1table). Acute undernutrition rates were highest in Grand Bassa reaching up to 4% GAM and close to 2% GAM in Greater Monrovia at baseline. These estimates are relatively low but are the generally expected values for these areas in Liberia. At endline, the rates for Greater Monrovia increased slightly while for Grand Bassa they decreased slightly. These changes are not statistically significant.
 
-```{r nut1plot, echo = FALSE, eval = TRUE, fig.cap = "Acute undernutrition prevalence", fig.height = 6, fig.width = 12, fig.align = "center", fig.pos = "H", fig.retina = 1}
+```{r nut1plot, echo = FALSE, eval = TRUE, fig.cap = "Acute undernutrition prevalence", fig.height = 6, fig.width = 12, fig.align = "center", fig.pos = "H"}
 ## Baseline data
 nutEst <- read.csv("data/nutEst.csv")
 x <- nutEst
@@ -1563,6 +1561,7 @@ kable(x = xy,
       escape = FALSE,
       format = "latex") %>%
   row_spec(row = 0, bold = TRUE) %>%
+  column_spec(column = 2:ncol(xy), monospace = TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
   add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
   add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6))
@@ -1574,7 +1573,7 @@ kable(x = xy,
 
 Screening coverage is very low for both Greater Monrovia and Grand Bassa as shown in Figure \@ref(fig:screen1) and Table \@ref(tab:screen2) and spatial distribution is low across both programme areas as shown in the maps in Figure \@ref(fig:screen1map) and Figure \@ref(fig:screen2map).
 
-```{r screen1, echo = FALSE, eval = TRUE, fig.cap = "Acute undernutrition screening coverage", fig.height = 8, fig.width = 10, fig.align = "center", fig.pos = "H", fig.retina = 1}
+```{r screen1, echo = FALSE, eval = TRUE, fig.cap = "Acute undernutrition screening coverage", fig.height = 6, fig.width = 10, fig.align = "center", fig.pos = "H"}
 screenEst <- read.csv("data/screenEst.csv")
 x <- screenEst
 
@@ -1609,8 +1608,8 @@ ggplot(data = screenDF, mapping = aes(x = round, y = estimate * 100)) +
   geom_col(color = "#85010C", fill = "#85010C", width = 0.7, alpha = 0.7) +
   facet_grid(county ~ varNames) +
   labs(x = "", y = "%") +
-  scale_y_continuous(limits = c(0, 100),
-                     breaks = seq(from = 0, to = 100, by = 20)) +
+  scale_y_continuous(limits = c(0, 10),
+                     breaks = seq(from = 0, to = 10, by = 2)) +
   themeSettings +
   theme(strip.text.x = element_text(size = 12))
 ```
@@ -1641,12 +1640,13 @@ kable(x = allTab,
       escape = FALSE,
       format = "latex") %>%
   row_spec(row = 0, bold = TRUE) %>%
+  column_spec(column = 2:ncol(allTab), monospace = TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
   add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
   add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE) 
 ```
 
-```{r screen1map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of acute undernutrition screening coverage in Greater Monrovia", fig.width = 8, fig.height = 8, fig.align = "center", fig.pos = "H"}
+```{r screen1map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of acute undernutrition screening coverage in Greater Monrovia", fig.width = 8, fig.height = 8, out.width = "65%", fig.align = "center", fig.pos = "H"}
 x <- subset(screenBaseGM, select = c(county, screen1, screen2))
 x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
 xGeom <- fortify(x)
@@ -1686,7 +1686,7 @@ ggplot(data = xyGeom,
   themeMapping
 ```
 
-```{r screen2map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of acute undernutrition screening coverage in Grand Bassa", fig.width = 8, fig.height = 8, fig.align = "center", fig.pos = "H"}
+```{r screen2map, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of acute undernutrition screening coverage in Grand Bassa", fig.width = 8, fig.height = 8, out.width = "65%", fig.align = "center", fig.pos = "H"}
 x <- subset(screenBaseGB, select = c(county, screen1, screen2))
 x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
 xGeom <- fortify(x)
@@ -1732,9 +1732,9 @@ ggplot(data = xyGeom,
 
 Case-finding effectiveness in both Greater Monrovia and Grand Bassa are low at baseline (see Figure \@ref(fig:cmam1plot) and Table \@ref(tab:cmam1table)) with Greater Monrovia having a higher rate at about 31% compared to 6% in Grand Bassa. At endline, Greater Monrovia's case-finding effectiveness dropped significantly to just about 15% while Grand Bassa's case-finding effectiveness stayed about the same.
 
-Treatment coverage is at 55% in Greater Monrovia at baseline which is an improvement from previous coverage estimates for the area but Grand Bassa only managed to get 18% treatment coverage. At endline, treatment coverage in Greater Monrovia dropped to less than 30% while treatment coverage in Grand Bassa decreased slightly to about 13%. The drop in coverage of CMAM for Greater Monrovia is statistically signficant.
+Treatment coverage is at 55% in Greater Monrovia at baseline which is an improvement from previous coverage estimates for the area but Grand Bassa only managed to get 18% treatment coverage. At endline, treatment coverage in Greater Monrovia dropped to less than 30% while treatment coverage in Grand Bassa decreased slightly to about 13%. The drop in coverage of CMAM for Greater Monrovia is statistically significant.
 
-```{r cmam1plot, echo = FALSE, eval = TRUE, fig.cap = "CMAM coverage", fig.height = 8, fig.width = 8, fig.align = "center", fig.pos = "H", fig.retina = 1}
+```{r cmam1plot, echo = FALSE, eval = TRUE, fig.cap = "CMAM coverage", fig.height = 6, fig.width = 10, fig.align = "center", fig.pos = "H"}
 coverageEst <- read.csv("data/coverageEst.csv")
 
 x <- coverageEst
@@ -1801,6 +1801,7 @@ kable(x = allTab,
       escape = FALSE,
       format = "latex") %>%
   row_spec(row = 0, bold = TRUE) %>%
+  column_spec(column = 2:ncol(allTab), monospace = TRUE) %>%
   kable_styling(latex_options = c("HOLD_position", "striped"), font_size = 9) %>%
   add_header_above(c(" " = 1, "Baseline" = 3, "Endline" = 3, "Baseline" = 3, "Endline" = 3), bold = TRUE) %>%
   add_header_above(c(" " = 1, "Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE)
@@ -1808,9 +1809,7 @@ kable(x = allTab,
 
 The spatial distribution of CMAM coverage in Greater Monrovia is shown in Figure \@ref(fig:cmamMap1). It shows high levels of coverage at baseline throughout most of Greater Monrovia but with significant areas of low coverage in the western and southeastern sections. At endline, case-finding effectiveness and treatment coverage is low throughout the whole of Greater Monrovia with very little spatial variation.
 
-The spatial distribution of CMAM coverage in Grand Bassa is shown in Figure \@ref(fig:cmamMap2). Coverage at baseline in Grand Bassa is low throughout but with pockets of high coverage in the western area of the county. At endline, the case-finding effectiveness and treatment coverage of CMAM in Grand Bassa is still generally low but with lighter hotspots than baseline. Areas of high coverage in the west of the county has increased.
-
-```{r cmamMap1, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of CMAM coverage in Greater Monrovia", fig.width = 10, fig.height = 8, fig.align = "center", fig.pos = "H"}
+```{r cmamMap1, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of CMAM coverage in Greater Monrovia", fig.width = 8, fig.height = 8, out.width = "65%", fig.align = "center", fig.pos = "H"}
 x <- cmamBaseGM
 x$county <- "Greater Monrovia"
 names(x) <- c("county", "cf", "tc")
@@ -1853,7 +1852,10 @@ ggplot(data = xyGeom,
   themeMapping
 ```
 
-```{r cmamMap2, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of CMAM coverage in Grand Bassa", fig.width = 10, fig.height = 8, fig.align = "center", fig.pos = "H"}
+
+The spatial distribution of CMAM coverage in Grand Bassa is shown in Figure \@ref(fig:cmamMap2). Coverage at baseline in Grand Bassa is low throughout but with pockets of high coverage in the western area of the county. At endline, the case-finding effectiveness and treatment coverage of CMAM in Grand Bassa is still generally low but with lighter hotspots than baseline. Areas of high coverage in the west of the county has increased.
+
+```{r cmamMap2, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of CMAM coverage in Grand Bassa", fig.width = 8, fig.height = 8, out.width = "65%", fig.align = "center", fig.pos = "H"}
 x <- cmamBaseGB
 names(x) <- c("county", "cf", "tc")
 x@data <- data.frame(id = row.names(x), round = "Baseline", x@data)
@@ -2035,23 +2037,63 @@ plot_grid(baselineGM, endlineGM, baselineGB, endlineGB,
           vjust = 1)
 ```
 
+\newpage
+
 # Discussion
 
-The results of the coverage assessment of direct nutrition interventions in Liberia specifically in Greater Monrovia and Grand Bassa indicate various levels of disparity in coverage both between the programme areas and within the programme areas assessed.
+The aim and priority in public health and nutrition services is to reach as many of those affected and/or needing the services. Achieving these goals will maximise impact and the capacity of the service to meet need. Good coverage is a key determinant in meeting need. It is important therefore to evaluate coverage, not just to assess the degree to which need is being met, but also to understand what factors affect access to and uptake of services, in order to initiate action to ensure the greatest number of people needing treatment are able to benefit from it.
 
-Long-standing programmes such as IFA supplementation, IYCF counselling and vitamin A supplementation have performed fairly well in terms of coverage. The majority of women and children targeted by these programmes are knowledgeable of the programme and are beneficiaries of the programme. Years of implementation complemented by the level of support and investment by the government and its partners seem to have paid dividends in allowing for these programmes to reach almost all of their targeted beneficiaries. However, there is still much room for improvement and the current coverage levels can still be improved and increased.
+Coverage can be simply defined as the proportion of all people needing or eligible to receive a service who actually receive that service. Tanahashi’s paper, “Health service coverage and its evaluation,” [@Tanahashi:1978we] presents a more nuanced conception of coverage that focuses on key stages of coverage to identify where failures of service provision occur.
 
-For IFA supplementation, the programme has been able to reach most mothers and has been successful in getting them to take IFA supplements. However, the key challenge for the programme now is to keep mothers taking the tablets for the recommended period of time (at least 90 days). Since the survey did not collect data on mother's reasons for stopping IFA tablet consumption, it would be a good first step for the factors for stopping IFA tablet consumption be investigated with the results used as the basis for further counselling and education provided for pregnant women. Given that contact with health care services during pregnancy is high, it would be good to review existing guidance provided through ANC regarding the intake of IFA and to see whether relevant and appropriate information that addresses pregnant women's reasons for stopping are clarified and addressed.
+The stages that Tanahashi identifies are as follows: 
+
+1.	Availability coverage - people for whom the service is available
+
+2.	Accessibility coverage - people who can use the service
+
+3.	Acceptability coverage - people who are willing to use the service
+
+4.	Contact coverage - people who use the service; and,
+
+5.	Effectiveness coverage - people who receive effective care or service
+
+These levels of coverage identified by Tanahashi are related hierarchically as illustrated in Figure \@ref(fig:tanahashi).
+
+```{r tanahashi, echo = FALSE, eval = TRUE, fig.cap = "Tanahashi's hierarchical model of health service coverage", fig.align = "center", fig.pos = "H"}
+knitr::include_graphics("figures/coverageTanahashi.png")
+```
+
+Timely, appropriate and high-quality monitoring of coverage is essential in planning, implementing and tracking the progress of programmes such as those for maternal, newborn and child health and nutrition [@Bryce:2013dd]. However, large gaps still exist with regard to coverage data and assessment of these programmes [@Bryce:2008kf; @Bryce:2013dd; @InternationalFoodPolicyResearchInstitute:2014wj]. For example, only 11 out of 75 countries that account for 95% of maternal and child deaths had data on all 8 coverage indicators[^5] that have been recommended for monitoring the progress of key interventions aimed at improving women’s and children’s health [@independentExpertReviewGrouponInformationandAccountabilityforWomensandChildrensHealth:2013uc]. A similar scenario exists for nutrition programmes. Coverage data for the 12 key nutrition-specific interventions[^6] crucial for undernutrition reduction [@Bhutta:2008p10829; @Bhutta:2013ks; @Bhutta:2013cf; @InternationalFoodPolicyResearchInstitute:2014wj] are scarce; only 3 of the 12 interventions have readily available, nationally-comparable data in a majority of countries, with the rest of the interventions having either no data at all, non-comparable data or only sub-national data [@InternationalFoodPolicyResearchInstitute:2014wj].
+
+Other coverage-related considerations are not addressed by currently available data [@Guevarra:2014ta]. These are:
+
+* **Overall vs. local estimates**. The heterogeneous (i.e. uneven) nature of coverage of health and nutrition surveys over a wide area (countrywide, regional) is not taken into consideration. More often than not, available data is only for overall aggregated estimates across the entire wide area. Available data hides the heterogeneity of coverage over space.
+
+* **Time to reach standards**. Whether a service is new or well established will have an effect on what is realistically achievable, what can be judged as acceptable and over what time period we can expect standards to be reached.
+
+* **Level of the standard**. Stating a minimum standard may act as a brake on ambition, as over time it would be hoped that these standards are exceeded. Coverage should increase over time and once a standard has been met, a new and higher standard should be set. This should ensure continual and incremental improvements in line with an audit cycle which aims to achieve and maintain best practice.
+
+The Liberia coverage assessment of direct nutrition interventions was developed and designed in recognition of this global context of health and nutrition programmes coverage and their assessment. The Liberia coverage assessment provides results on 5 of the 12 key nutrition-specific interventions described above and at a sub-national level (Greater Monrovia district and Grand Bassa county level) which has not been available previously[^7]. In addition to indicator estimates, the Liberia coverage assessment provides fine-grained indicator surface maps showing areas of high and low coverage in each of the sub-national units assessed.
+
+The results of the Liberia coverage assessment in Greater Monrovia and Grand Bassa indicate various levels of disparity in coverage both between the programme areas and within the programme areas assessed.
+
+Long-standing programmes such as IFA supplementation, IYCF counselling and vitamin A supplementation have performed fairly well in terms of coverage. The majority of women and children targeted by these programmes are knowledgeable of the programme and are beneficiaries of the programme. Years of implementation complemented by the level of support and investment by the government and its partners seem to have paid dividends in allowing for these programmes to reach almost all of their targeted beneficiaries. Given that these programmes have been in place for years, the level of the standard for coverage of these indicators should be set quite high with the benchmark being the 90% mark discussed by Bhutta and colleagues [@Bhutta:2013ks] for maximum health and nutrition impact. In this regard, the assessment reveals possible areas of improvement to reach this standard.
+
+For IFA supplementation, the programme has been able to reach most mothers and has been successful in getting them to take IFA supplements. However, the key challenge for the programme is **compliance** - to keep mothers taking the tablets for the recommended period of time. Since the survey did not collect data on mother's reasons for stopping IFA tablet consumption, it would be a good first step for the factors for stopping IFA tablet consumption be investigated with the results used as the basis for further counselling and education provided for pregnant women during ANC. Given that contact with health care services during pregnancy is high, it would be good to review existing guidance provided through ANC regarding the intake of IFA and to see whether relevant and appropriate information that addresses pregnant women's reasons for stopping are clarified and addressed.
 
 For IYCF counselling, coverage of the counselling activities is high. It would now be important to assess the next level in the coverage hierarchy of whether mothers practice what they have been taught or what they have learned. The most straightforward way of doing so would be assessing IYCF practices as these are the key behaviours that are targeted by the counselling. If this was to be considered, however, UNICEF and its partners would have to take into account the fact that current standard IYCF indicators can only be assessed through big sample surveys such as DHS and MICS. Yet these surveys would most likely not provide the same level of detail and information as the current assessment. There are, however, small sample alternatives to the standard IYCF indicators such as the Infant and Child Feeding Index (ICFI) indicator set which can be considered for use in routine monitoring of IYCF practices [@Guevarra:2016uw].
 
-For vitamin A supplementation, the current figures are relatively lower than the expected indirect coverage estimates produced by government. It would be important to see what the potential reasons for this disparity are and to ensure that vaccination campaigns, to which vitamin A supplementation is generally attached, ensures the availability of vitamin A and optimises the synergies between vitamin A supplementation and vaccination given that it seems availability of vitamin A and access to vaccination is a factor for non-coverage to vitamin A. 
+For vitamin A supplementation, the current figures are relatively lower than the expected indirect coverage estimates produced by government through the routine data collected through the Health Management Information System (HMIS). As always, it is important to recognise the limitations of indirect coverage estimates and to assess what the potential reasons for this disparity are. In addition, given that vitamin A supplementation is generally delivered in twice yearly campaigns alongside vaccinations, it would be important to ensure the availability of vitamin A and optimise the synergies between vitamin A supplementation and vaccination given that availability of vitamin A and access to vaccination has been cited as a common reason for non-coverage to vitamin A. 
 
-Programmes such as MNP and CMAM, on the other hand, show how new and recently scaled-up programmes are still in the process of achieving the highest levels of coverage possible. MNP supplementation which is the newest programme of those assessed is understandably still struggling with coverage even at endline. Knowledge of the programme and knowlege of how the programme works and its importance for children's health and nutrition is the key falter point which is typical of a programme at this stage of its evolution. The programme is mainly anchored to the health centre and therefore knowledge and access to it is primarily influenced by mothers' behaviours and attitudes towards seeking care and treatment at the health facility. Given that MNP is aimed at children who are otherwise healthy (not acute malnourished), the current MNP coverage estimates indicate that health-seeking behaviour leading to a visit to a health facility is mainly influenced by whether their children are sick rather than as a way to seek information or participate in promotive and preventive services such as MNP supplementation. Other factors include physical access to health centres. A more community-based approach to MNP supplementation that is integrated with other community-based programmes such as vaccinations and CMAM should be considered as a potential delivery mechanism. Screening of children using MUAC can be integrated into vaccination campaigns and children under 2 years old identified as not being acutely malnourished are informed about MNP supplementation programme and ideally provided with the MNP supplements at point of contact.
+Programmes such as MNP and CMAM, on the other hand, show how new and recently scaled-up programmes are still in the process of achieving the highest levels of coverage possible. MNP supplementation which is the newest programme of those assessed is understandably still struggling with coverage even at endline. Knowledge of the programme and knowledge of how the programme works and its importance for children's health and nutrition is the key falter point which is typical of a programme at this stage of its evolution. However, available evidence on similar programmes providing complementary feeding supplements show a much higher awareness and contact coverage at a minimum 1 year after start of programme implementation [@Aaron:2016cv] and typically falters at the effectiveness coverage level. This difference in coverage to other similar programmes elsewhere can be linked to the way the programme in Liberia is being implemented. The programme is mainly anchored to the health centre and therefore knowledge and access to it is primarily influenced by mothers' behaviours and attitudes towards seeking care and treatment at the health facility. Given that MNP is aimed at children who are otherwise healthy (not acute malnourished), the current MNP coverage estimates indicate that health-seeking behaviour leading to a visit to a health facility is mainly influenced by whether their children are sick rather than as a way to seek information or participate in promotive and preventive services such as MNP supplementation. Other factors include physical access to health centres. A more community-based approach to MNP supplementation that is integrated with other community-based programmes such as vaccinations and CMAM should be considered as a potential delivery mechanism. Screening of children using MUAC can be integrated into vaccination campaigns and children under 2 years old identified as not being acutely malnourished are informed about MNP supplementation programme and ideally provided with the MNP supplements at point of contact. These efforts should be coupled with clear behavioural change communication messages on the importance of complementary feeding and how the MNP supplement contributes to the increased quality of complementary feeding with the aim of creating demand for MNP amongst the programme's target beneficiary. Finally, information on access to the programme providing MNP including eligibility criteria and locations where they can receive the MNP should be explained clearly to the potential beneficiaries.
 
-Finally, for CMAM which is not entirely new but still in its early stages of scale-up, the coverage estimates at baseline and endline indicate 1) disparity between Greater Monrovia and Grand Bassa in terms of the level and intensity of the community aspects of the programme; 2) signficant drop in coverage of CMAM in Greater Monrovia given that at baseline its coverage was exemplary for an urban CMAM programme; and, 3) no significant change in coverage of CMAM in Grand Bassa with coverage still remaining unacceptably low. At baseline, screening and case-finding in Greater Monrovia is better than in Grand Bassa and this can partly explain the difference in treatment coverage between the two areas at baseline. At endline, no improvement in screening has happened and the levels of coverage for CMAM has signficantly plummetted. Based on feedback by stakeholders, this has been attributed to government being the main service provider for CMAM in the past year as usual stakeholders that supported government were not engaged due to several programmatic issues. This points to the need for ensuring increased and continued capacity building of government in CMAM and other related interventions so that they can be truly in a position that they can implement and maintain these programmes with or without external support.
+Finally, for CMAM the coverage estimates at baseline and endline indicate 1) disparity between Greater Monrovia and Grand Bassa in terms of the level and intensity of the community aspects of the programme; 2) significant drop in coverage of CMAM in Greater Monrovia given that at baseline its coverage was exemplary for an urban CMAM programme; and, 3) no significant change in coverage of CMAM in Grand Bassa with coverage still remaining unacceptably low. At baseline, screening and case-finding in Greater Monrovia is better than in Grand Bassa and this can partly explain the difference in treatment coverage between the two areas at baseline. At endline, no improvement in screening has happened and the levels of coverage for CMAM has significantly plummeted. Given that screening has remained extremely low at endline compared to baseline in both survey areas, other factors should be looked into for the cause of this significant decline in coverage in Greater Monrovia and the stagnant coverage in Grand Bassa. Review of previous CMAM coverage assessment conducted in Greater Monrovia by Action Against Hunger in 2011 [@AccionContralaFaim:2011vu] reveal that despite the reported 48.6% period coverage, a relatively high figure for most CMAM programmes particularly for a programme that is being implemented in an urban area, several barriers to coverage were identified the most common of which was awareness of the programme, its services and intended beneficiaries. This was the same key factor elicited in the baseline (where treatment coverage was at 55%) and endline (where treatment coverage dropped to 27%) of the Liberia coverage assessment. With all these factors of screening and awareness being constant since the early stages of the CMAM programme in Liberia, a more basic reason for the significant decrease in coverage in Greater Monrovia is likely. Based on feedback by stakeholders, the CMAM programme in Greater Monrovia has been mainly implemented by government in the past year without the usual support from other stakeholders. The possible effect of this on coverage is more on the day-to-day implementation of the programme particularly with case admission and management. It is recommended that a more nuanced investigation into the CMAM implementation be done in both Greater Monrovia and Grand Bassa. Specifically, an analysis of routine programme monitoring data should be done for as far back as data is available to assess the following:
 
-Lessons learned from the years of implementation of the IFA and vitamin A programmes can be useful in improving coverage of MNP and CMAM particularly with potential integration of these services into a unified and coherent child health and nutrition programme in Liberia.
+1. Median MUAC at admission - MUAC at admission measures timeliness of admissions. This measure assesses either how early/late beneficiaries seek care for acute malnutrition or how early/late the programme is able to find cases of acute malnutrition. Late admissions or those children who are admitted to the program only after they have met admission criteria for a considerable period of time are of particular interest [@Myatt:2012tt]. This analysis is standard in coverage assessments using the Semi-Quantitative Evaluation of Access and Coverage (SQUEAC). Based on review of the SQUEAC performed by Action Against Hunger in 2011, this analysis was not performed. Based on the extremely screening coverage in Greater Monrovia and Grand Bassa and the low case-finding effectiveness at baseline and endline, it is likely that since the programme has started, majority of cases of SAM in the CMAM programme were admitted late. The implication of this is that the length of stay in CMAM would be longer for cases presenting late for treatment. Length of stay (see second point below) has an impact on coverage in that programmes with cases that stay in treatment for longer periods of time would tend to have higher period/treatment coverage. This may explain the relatively high level of coverage in the 2011 and 2018 assessments.
+
+2. Median length of stay or duration of treatment episode - This can be calculated using recommended standard routine programme monitoring procedures [@ValidInternational:2006vk]. Examining the duration of the treatment episode (i.e., the time from admission to discharge) may also provide useful information about programme coverage. Long treatment episodes may be due to late admission or poor adherence to the CMAM treatment protocol by programme staff (e.g., failure to give a systemic antimicrobial, RUTF stock-outs) and beneficiaries (e.g., intra-household sharing of RUTF, lack of continuity of care) [@Myatt:2012tt]. Programmes with long treatment episodes tend to be unpopular with beneficiaries and suffer from late treatment seeking and high levels of defaulting both of which are failures of coverage [@Myatt:2012tt].
+
+Based on results of this in-depth investigation, appropriate remedial actions should be done to emphasise CMAM treatment protocols prescribed in the newly formulated CMAM guidelines for Liberia. In addition, screening coverage will need to be increased so as to find cases early and get them treated early and quickly.
 
 \newpage
 
@@ -2098,3 +2140,8 @@ knitr::include_graphics("forms/childForm4.png")
 
 [^4]: See package site at [https://validmeasures.org/liberia/](https://validmeasures.org/liberia/) for more information and for instructions on installation and usage
 
+[^5]: These indicators are 1) met need for contraception; 2) antenatal care coverage; 3) antiretroviral prophylaxis among HIV-positive pregnant women to prevent vertical transmission of HIV, and antiretroviral therapy for women who are treatment-eligible; 4) skilled attendant at birth; 5) postnatal care for mothers and babies; 6) exclusive breastfeeding for six months; 7) three doses of the combined diphtheria, pertussis and tetanus vaccine; and, 8) antibiotic treatment for pneumonia.
+
+[^6]: These interventions include 1) folic acid supplementation/fortification; 2) balanced energy-protein supplementation; 3) calcium supplementation; 4) multiple micronutrient supplementation; 5) promotion of breastfeeding; 6) complementary feeding; 7) vitamin A supplementation; 8) preventive zinc supplementation; 9) zinc for treatment of diarrhoea; 10) feeding for children with moderate acute malnutrition; 11) therapeutic feeding for severe wasting; and, 12) universal salt iodisation.
+
+[^7]: Results for the same indicators have only previously been reported at national level via the Liberia Demographic and Health Services (LDHS).
