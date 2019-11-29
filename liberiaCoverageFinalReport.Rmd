@@ -438,6 +438,8 @@ kable(x = allTab,
   add_header_above(c(" " = 1, "Greater Monrovia" = 6, "Grand Bassa" = 6), bold = TRUE)
 ```
 
+\newpage
+
 However, coverage of IFA faltered significantly in both areas when length (in days) of IFA tablet consumption was assessed with no improvement at endline compared to baseline (see Figure \@ref(fig:ifaTanahashiPlot)).
 
 ```{r ifaTanahashiPlot, echo = FALSE, eval = TRUE, fig.cap = "Tanahashi plot for IFA supplementation coverage", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
@@ -464,21 +466,23 @@ ggplot(data = ifaDF, aes(x = varNames, y = estimate * 100, group = df)) +
   themeSettings
 ```
 
-Of the few who have not received IFA tablets in Greater Monrovia and Grand Bassa despite attending ANC during their last pregnancy, the main reasons for not getting IFA tablets are shown in Figure \@ref(fig:ifa2plot). At baseline, information regarding the IFA tablets was the main reason for non-coverage in both areas. At endline, difficulty in access and availability of IFA tablets at the clinics or hospital were the main reasons for non-coverage. This may mean that previous issue of lack of information was addressed over the past year but those who have learned about IFA tablets have struggled to gain access to the supplements.
+Of the few who have not received IFA tablets in Greater Monrovia and Grand Bassa despite attending ANC during their last pregnancy, the main reasons for not getting IFA tablets are shown in Figure \@ref(fig:ifa2plot). At baseline, access to health facility from which to obtain IFA was the main reason for non-coverage in both areas. At endline, availability of IFA tablets at the clinics or hospital were the main reasons for non-coverage.
 
 ```{r ifa2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving/purchasing IFA supplementation", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
 ifaEst <- read.csv("data/ifaEst.csv")
 x <- ifaEst[ifaEst$indicator %in% paste("ifa3a.", 1:10, sep = "") & ifaEst$county == "Monrovia", ]
-x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
-                                                  "Took too long to get tablets",
-                                                  "Too expensive",
-                                                  "Too far from clinic/hospital",
-                                                  "No information where to get tablets",
-                                                  "Did not go to hospital/clinic",
-                                                  "Used traditional medicine",
-                                                  "Not available to buy",
-                                                  "Ebola time",
-                                                  "Other"))
+x$indicator <- factor(x = x$indicator,
+                      levels = paste("ifa3a.", 1:10, sep = ""),
+                      labels = c("Health centre ran out",
+                                 "Took too long to get tablets",
+                                 "Too expensive",
+                                 "Too far from clinic/hospital",
+                                 "No information where to get tablets",
+                                 "Did not go to hospital/clinic",
+                                 "Used traditional medicine",
+                                 "Not available to buy",
+                                 "Ebola time",
+                                 "Other"))
 
 x <- x[x$estimate != 0, ]
 
@@ -510,16 +514,18 @@ endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate
   themeSettings
 
 x <- ifaEst[ifaEst$indicator %in% paste("ifa3a.", 1:10, sep = "") & ifaEst$county == "Grand Bassa", ]
-x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
-                                                  "Took too long to get tablets",
-                                                  "Too expensive",
-                                                  "Too far from clinic/ hospital",
-                                                  "No information where to get tablets",
-                                                  "Did not go to hospital/clinic",
-                                                  "Used traditional medicine",
-                                                  "Not available to buy",
-                                                  "Ebola time",
-                                                  "Other"))
+x$indicator <- factor(x = x$indicator,
+                      levels = paste("ifa3a.", 1:10, sep = ""),
+                      labels = c("Health centre ran out",
+                                 "Took too long to get tablets",
+                                 "Too expensive",
+                                 "Too far from clinic/ hospital",
+                                 "No information where to get tablets",
+                                 "Did not go to hospital/clinic",
+                                 "Used traditional medicine",
+                                 "Not available to buy",
+                                 "Ebola time",
+                                 "Other"))
 
 x <- x[x$estimate != 0, ]
 
@@ -531,21 +537,23 @@ baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estima
   themeSettings
 
 x <- ifaBoot[ifaBoot$varLabel %in% paste("ifa3", letters[1:15], sep = "") & ifaBoot$county == "Grand Bassa", ]
-x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
-                                                "Took too long to get tablets",
-                                                "Too expensive",
-                                                "Did not go to hospital",
-                                                "Don't know about\niron-folic acid",
-                                                "Didn't get any iron-folic acid",
-                                                "Received but did not take",
-                                                "Not interested",
-                                                "No reason",
-                                                "No money",
-                                                "Not good",
-                                                "Far from health centre/ hospital",
-                                                "Not given tablets",
-                                                "No time",
-                                                "Don't like medicine"))
+x$varLabel <- factor(x = x$varLabel,
+                     levels = paste("ifa3", letters[1:15], sep = ""),
+                     labels = c("Health centre ran out",
+                                "Took too long to get tablets",
+                                "Too expensive",
+                                "Did not go to hospital",
+                                "Don't know about\niron-folic acid",
+                                "Didn't get any iron-folic acid",
+                                "Received but did not take",
+                                "Not interested",
+                                "No reason",
+                                "No money",
+                                "Not good",
+                                "Far from health centre/ hospital",
+                                "Not given tablets",
+                                "No time",
+                                "Don't like medicine"))
 
 x <- x[x$estimate != 0, ]
 
@@ -740,22 +748,24 @@ kable(x = allTab,
 
 \newpage
 
-Of the few who did not attend IYCF counselling, their main reasons for not attending are presented in Figure \@ref(fig:icf2table). At baseline, mothers not covered by IYCF counselling reported being too busy and timing of IYCF counselling as the main reasons for non-coverage. At endline, timing of IYCF counselling was still an issue but interest in IYCF counselling was reported the most.
+Of the few who did not attend IYCF counselling, their main reasons for not attending are presented in Figure \@ref(fig:icf2table). At baseline, mothers not covered by IYCF counselling reported not having information about IYCF counselling and how to access it as the main reasons for non-coverage. At endline, timing of IYCF counselling and lack of interest in IYCF counselling was reported the most.
 
 ```{r icf2table, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not attending IYCF counselling", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
 icfEst <- read.csv("data/icfEst.csv")
 x <- icfEst[icfEst$indicator %in% paste("icf2a.", 1:11, sep = "") & icfEst$county == "Monrovia", ]
-x$indicator <- factor(x = x$indicator, labels = c("Timing not convenient",
-                                                  "Not interested",
-                                                  "Do not trust counsellor",
-                                                  "Don't think I need it",
-                                                  "Did not go to hospital/clinic", 
-                                                  "During Ebola period", 
-                                                  "IYCF counselling not available",
-                                                  "No information on how\nto access counselling",
-                                                  "No money to go to hospital",
-                                                  "No time/too busy",
-                                                  "Too far from clinic/hospital"))
+x$indicator <- factor(x = x$indicator,
+                      levels = paste("icf2a.", 1:11, sep = ""),
+                      labels = c("Timing not convenient",
+                                 "Not interested",
+                                 "Do not trust counsellor",
+                                 "Don't think I need it",
+                                 "Did not go to hospital/clinic", 
+                                 "During Ebola period", 
+                                 "IYCF counselling not available",
+                                 "No information on how\nto access counselling",
+                                 "No money to go to hospital",
+                                 "No time/too busy",
+                                 "Too far from clinic/hospital"))
 
 x <- x[x$estimate != 0, ]
 
@@ -785,17 +795,19 @@ endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate
   themeSettings
 
 x <- icfEst[icfEst$indicator %in% paste("icf2a.", 1:11, sep = "") & icfEst$county == "Grand Bassa", ]
-x$indicator <- factor(x = x$indicator, labels = c("Timing not convenient",
-                                                  "Not interested",
-                                                  "Do not trust counsellor",
-                                                  "Don't think I need it",
-                                                  "Did not go to hospital/clinic", 
-                                                  "During Ebola period", 
-                                                  "IYCF counselling not\navailable",
-                                                  "No information on how\nto access counselling",
-                                                  "No money to go to hospital",
-                                                  "No time/too busy",
-                                                  "Too far from clinic/hospital"))
+x$indicator <- factor(x = x$indicator,
+                      levels = paste("icf2a.", 1:11, sep = ""),
+                      labels = c("Timing not convenient",
+                                 "Not interested",
+                                 "Do not trust counsellor",
+                                 "Don't think I need it",
+                                 "Did not go to hospital/clinic", 
+                                 "During Ebola period", 
+                                 "IYCF counselling not\navailable",
+                                 "No information on how\nto access counselling",
+                                 "No money to go to hospital",
+                                 "No time/too busy",
+                                 "Too far from clinic/hospital"))
 
 x <- x[x$estimate != 0, ]
 
@@ -807,20 +819,22 @@ baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estima
   themeSettings
 
 x <- iycfBoot[iycfBoot$varLabel %in% paste("icf2", letters[1:14], sep = "") & iycfBoot$county == "Grand Bassa", ]
-x$varLabel <- factor(x = x$varLabel, labels = c("Timing not convenient",
-                                                "Not interested",
-                                                "Do not trust counsellor",
-                                                "Don't think I need it",
-                                                "Did not go to hospital",
-                                                "No one told me about it/\nnot invited",
-                                                "No time",
-                                                "No interest",
-                                                "Don't know about it",
-                                                "Too far",
-                                                "No money",
-                                                "Carer not around",
-                                                "Too weak to go",
-                                                "Don't like medicine"))
+x$varLabel <- factor(x = x$varLabel, 
+                     levels = paste("icf2", letters[1:14], sep = ""),
+                     labels = c("Timing not convenient",
+                                "Not interested",
+                                "Do not trust counsellor",
+                                "Don't think I need it",
+                                "Did not go to hospital",
+                                "No one told me about it/\nnot invited",
+                                "No time",
+                                "No interest",
+                                "Don't know about it",
+                                "Too far",
+                                "No money",
+                                "Carer not around",
+                                "Too weak to go",
+                                "Don't like medicine"))
 
 x <- x[x$estimate != 0, ]
 
@@ -1005,21 +1019,23 @@ kable(x = allTab,
   #landscape()
 ```
 
-The main reasons for not receiving MNP supplements are presented in Figure \@ref(fig:mnp2plot). At baseline, availability of MNP was the main reason for non-coverage. At endline, reasons have shifted more to personal preferences by parents not to have children take the MNP supplement mainly because they think their child doesn't need the supplement. It should be noted, however, that given the coverage results, knowledge, awareness and information about MNP supplementation is the main falter point for coverage and this is reflected in the various reasons conveyed by those not covered.
+The main reasons for not receiving MNP supplements are presented in Figure \@ref(fig:mnp2plot). At baseline, lack of information about MNP supplementation programme was the main reason for non-coverage. At endline, reasons have shifted more to personal preferences by parents not to have children take the MNP supplement mainly because they think their child doesn't need the supplement. This seem to signify a shift from just not being aware of the MNP programme at baseline to being aware but then not knowing what the MNP is for and why it is important to receive and consume MNP for all children eligible.
 
 ```{r mnp2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving micronutrient powder", fig.width = 12, fig.height = 8, fig.align = "center", fig.pos = "H"}
 mnpEst <- read.csv("data/mnpEst.csv")
 x <- mnpEst[mnpEst$indicator %in% paste("mnp2a.", 1:10, sep = "") & mnpEst$county == "Monrovia", ]
-x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
-                                                  "Took too long to get\nmicronutrient powder",
-                                                  "Too expensive",
-                                                  "Child doesn't need it",
-                                                  "Heard it doesn't work/help",
-                                                  "Did not receive micronutrient powder/\nnot in programme",
-                                                  "Micronutrient powder not available",
-                                                  "Mother/child was sick",
-                                                  "Never asked for it",
-                                                  "No information on how to access\nmicronutrient powder"))
+x$indicator <- factor(x = x$indicator, 
+                      levels = paste("mnp2a.", 1:10, sep = ""),
+                      labels = c("Health centre ran out",
+                                 "Took too long to get\nmicronutrient powder",
+                                 "Too expensive",
+                                 "Child doesn't need it",
+                                 "Heard it doesn't work/help",
+                                 "Did not receive micronutrient powder/\nnot in programme",
+                                 "Micronutrient powder not available",
+                                 "Mother/child was sick",
+                                 "Never asked for it",
+                                 "No information on how to access\nmicronutrient powder"))
 
 x <- x[x$estimate != 0, ]
 
@@ -1051,16 +1067,18 @@ endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate
   themeSettings
 
 x <- mnpEst[mnpEst$indicator %in% paste("mnp2a.", 1:10, sep = "") & mnpEst$county == "Grand Bassa", ]
-x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
-                                                  "Took too long to get\nmicronutrient powder",
-                                                  "Too expensive",
-                                                  "Child doesn't need it",
-                                                  "Heard it doesn't work/help",
-                                                  "Did not receive micronutrient powder/\nnot in programme",
-                                                  "Micronutrient powder\nnot available",
-                                                  "Mother/child was sick",
-                                                  "Never asked for it",
-                                                  "No information on how to access\nmicronutrient powder"))
+x$indicator <- factor(x = x$indicator, 
+                      levels = paste("mnp2a.", 1:10, sep = ""),
+                      labels = c("Health centre ran out",
+                                 "Took too long to get\nmicronutrient powder",
+                                 "Too expensive",
+                                 "Child doesn't need it",
+                                 "Heard it doesn't work/help",
+                                 "Did not receive micronutrient powder/\nnot in programme",
+                                 "Micronutrient powder\nnot available",
+                                 "Mother/child was sick",
+                                 "Never asked for it",
+                                 "No information on how to access\nmicronutrient powder"))
 
 x <- x[x$estimate != 0, ]
 
@@ -1072,23 +1090,25 @@ baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estima
   themeSettings
 
 x <- mnpBoot[mnpBoot$varLabel %in% paste("mnp2", letters[1:17], sep = "") & mnpBoot$county == "Grand Bassa", ]
-x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
-                                                "Took too long to get\nmicronutrient powder",
-                                                "Too expensive",
-                                                "Child doesn't need it",
-                                                "Heard it doesn't work/help",
-                                                "Don't know/not seen/not heard of\nmicronutrient powder",
-                                                "Have not gone to hospital",
-                                                "Have not received any\nfrom hospital/centre",
-                                                "Hospital didn't tell me about it",
-                                                "Child not sick/healthy/\ndoesn't need it",
-                                                "Child doesn't want to take it",
-                                                "Too far",
-                                                "Don't want it/not interested",
-                                                "Hospital doesn't have it",
-                                                "Mother not around",
-                                                "No means",
-                                                "Mother pregnant at the time"))
+x$varLabel <- factor(x = x$varLabel, 
+                     levels = paste("mnp2", letters[1:17], sep = ""),
+                     labels = c("Health centre ran out",
+                                "Took too long to get\nmicronutrient powder",
+                                "Too expensive",
+                                "Child doesn't need it",
+                                "Heard it doesn't work/help",
+                                "Don't know/not seen/not heard of\nmicronutrient powder",
+                                "Have not gone to hospital",
+                                "Have not received any\nfrom hospital/centre",
+                                "Hospital didn't tell me about it",
+                                "Child not sick/healthy/\ndoesn't need it",
+                                "Child doesn't want to take it",
+                                "Too far",
+                                "Don't want it/not interested",
+                                "Hospital doesn't have it",
+                                "Mother not around",
+                                "No means",
+                                "Mother pregnant at the time"))
 
 x <- x[x$estimate != 0, ]
 
@@ -1317,17 +1337,19 @@ The main reasons for not receiving vitamin A are presented in Figure \@ref(fig:v
 ```{r vit2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not receiving vitamin A", fig.height = 8, fig.width = 12, fig.align = "center", fig.pos = "H"}
 vitEst <- read.csv("data/vitEst.csv")
 x <- vitEst[vitEst$indicator %in% paste("vit1a.", 1:11, sep = "") & vitEst$county == "Monrovia", ]
-x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
-                                                  "Took too long to get\nmicronutrient powder",
-                                                  "Child doesn't need it",
-                                                  "Heard it doesn't work/help",
-                                                  "Child just reached 6 months old",
-                                                  "Did not go to hospital/clinic",
-                                                  "No information on how to get vitamin A",
-                                                  "Not around during vaccination",
-                                                  "Not given vitamin A",
-                                                  "Not reached by vaccination team",
-                                                  "Too far from clinic/hospital"))
+x$indicator <- factor(x = x$indicator,
+                      levels = paste("vit1a.", 1:11, sep = ""),
+                      labels = c("Health centre ran out",
+                                 "Took too long to get\nmicronutrient powder",
+                                 "Child doesn't need it",
+                                 "Heard it doesn't work/help",
+                                 "Child just reached 6 months old",
+                                 "Did not go to hospital/clinic",
+                                 "No information on how to get vitamin A",
+                                 "Not around during vaccination",
+                                 "Not given vitamin A",
+                                 "Not reached by vaccination team",
+                                 "Too far from clinic/hospital"))
 
 x <- x[x$estimate != 0, ]
 
@@ -1339,16 +1361,18 @@ baselineGM <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estima
   themeSettings
 
 x <- vitBoot[vitBoot$varLabel %in% paste("vit1", letters[1:10], sep = "") & vitBoot$county == "Greater Monrovia", ]
-x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
-                                                "Took too long to get drops",
-                                                "Child doesn't need it",
-                                                "Heard it doesn't work/help",
-                                                "Child too young during last campaign",
-                                                "Not around during last campaign",
-                                                "Didn't hear/know about it",
-                                                "Never been to hospital",
-                                                "Vaccine team didn't come/reach",
-                                                "Not interested"))
+x$varLabel <- factor(x = x$varLabel, 
+                     levels = paste("vit1", letters[1:10], sep = ""),
+                     labels = c("Health centre ran out",
+                                "Took too long to get drops",
+                                "Child doesn't need it",
+                                "Heard it doesn't work/help",
+                                "Child too young during last campaign",
+                                "Not around during last campaign",
+                                "Didn't hear/know about it",
+                                "Never been to hospital",
+                                "Vaccine team didn't come/reach",
+                                "Not interested"))
 
 x <- x[x$estimate != 0, ]
 x <- x[!is.na(x$estimate), ]
@@ -1362,17 +1386,19 @@ endlineGM <- ggplot(data = x, aes(x = reorder(varLabel, -estimate), y = estimate
   themeSettings
 
 x <- vitEst[vitEst$indicator %in% paste("vit1a.", 1:11, sep = "") & vitEst$county == "Grand Bassa", ]
-x$indicator <- factor(x = x$indicator, labels = c("Health centre ran out",
-                                                  "Took too long to get\nmicronutrient powder",
-                                                  "Child doesn't need it",
-                                                  "Heard it doesn't work/help",
-                                                  "Child just reached 6 months old",
-                                                  "Did not go to hospital/clinic",
-                                                  "No information on how to get vitamin A",
-                                                  "Not around during vaccination",
-                                                  "Not given vitamin A",
-                                                  "Not reached by vaccination team",
-                                                  "Too far from clinic/hospital"))
+x$indicator <- factor(x = x$indicator,
+                      levels = paste("vit1a.", 1:11, sep = ""),
+                      labels = c("Health centre ran out",
+                                 "Took too long to get\nmicronutrient powder",
+                                 "Child doesn't need it",
+                                 "Heard it doesn't work/help",
+                                 "Child just reached 6 months old",
+                                 "Did not go to hospital/clinic",
+                                 "No information on how to get vitamin A",
+                                 "Not around during vaccination",
+                                 "Not given vitamin A",
+                                  "Not reached by vaccination team",
+                                  "Too far from clinic/hospital"))
 
 x <- x[x$estimate != 0, ]
 
@@ -1384,21 +1410,23 @@ baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -estimate), y = estima
   themeSettings
 
 x <- vitBoot[vitBoot$varLabel %in% paste("vit1", letters[1:15], sep = "") & vitBoot$county == "Grand Bassa", ]
-x$varLabel <- factor(x = x$varLabel, labels = c("Health centre ran out",
-                                                "Took too long to get drops",
-                                                "Child doesn't need it",
-                                                "Heard it doesn't work/help",
-                                                "Child too young during last campaign",
-                                                "Not around during last campaign",
-                                                "Didn't hear/know about it",
-                                                "Never been to hospital",
-                                                "Vaccine team didn't come/reach",
-                                                "Not interested",
-                                                "Too far",
-                                                "No facility",
-                                                "No means/money",
-                                                "No time",
-                                                "Waiting for next campaign"))
+x$varLabel <- factor(x = x$varLabel, 
+                     levels = paste("vit1", letters[1:15], sep = ""),
+                     labels = c("Health centre ran out",
+                                "Took too long to get drops",
+                                "Child doesn't need it",
+                                "Heard it doesn't work/help",
+                                "Child too young during last campaign",
+                                "Not around during last campaign",
+                                "Didn't hear/know about it",
+                                "Never been to hospital",
+                                "Vaccine team didn't come/reach",
+                                "Not interested",
+                                "Too far",
+                                "No facility",
+                                "No means/money",
+                                "No time",
+                                "Waiting for next campaign"))
 
 x <- x[x$estimate != 0, ]
 x <- x[!is.na(x$estimate), ]
@@ -1852,7 +1880,6 @@ ggplot(data = xyGeom,
   themeMapping
 ```
 
-
 The spatial distribution of CMAM coverage in Grand Bassa is shown in Figure \@ref(fig:cmamMap2). Coverage at baseline in Grand Bassa is low throughout but with pockets of high coverage in the western area of the county. At endline, the case-finding effectiveness and treatment coverage of CMAM in Grand Bassa is still generally low but with lighter hotspots than baseline. Areas of high coverage in the west of the county has increased.
 
 ```{r cmamMap2, echo = FALSE, eval = TRUE, fig.cap = "Spatial distribution of CMAM coverage in Grand Bassa", fig.width = 8, fig.height = 8, out.width = "65%", fig.align = "center", fig.pos = "H"}
@@ -1901,26 +1928,28 @@ For SAM cases not covered by the programme, Figure \@ref(fig:cmam2plot) summaris
 ```{r cmam2plot, echo = FALSE, eval = TRUE, fig.cap = "Reasons for not being in CMAM programme", fig.height = 8, fig.width = 12, fig.align = "center", fig.pos = "H"}
 barriersEst <- read.csv("data/barriersCount.csv")
 x <- barriersEst[barriersEst$indicator %in% c("q2", "q3", paste("q4a.q4", letters[1:18], sep = "")) & barriersEst$county == "Monrovia", ]
-x$indicator <- factor(x = x$indicator, labels = c("Mother/carer does not think child is too small/thin",
-              "Mother/carer does not know of any treatment",
-              "Came to health centre but was not measured",
-              "Too far",
-              "No time/too busy",
-              "Mother/carer is sick",
-              "Cannot carry more than one child",
-              "Feels ashamed about coming",
-              "Security problems",
-              "No one else to take care of other siblings",
-              "Rejected by programme",
-              "Other parents' children have been rejected",
-              "Husband refused",
-              "Though necessary to be enrolled in hospital first",
-              "Does not think programme can help children",
-              "Got diarrhoea from RUTF",
-              "Ration has worms",
-              "Out of stock",
-              "Lack of money to pay for transport",
-              "SAM case in SFP"))
+x$indicator <- factor(x = x$indicator, 
+                      levels = c("q2", "q3", paste("q4a.q4", letters[1:18], sep = "")),
+                      labels = c("Mother/carer does not think child is too small/thin",
+                                 "Mother/carer does not know of any treatment",
+                                 "Came to health centre but was not measured",
+                                 "Too far",
+                                 "No time/too busy",
+                                 "Mother/carer is sick",
+                                 "Cannot carry more than one child",
+                                 "Feels ashamed about coming",
+                                 "Security problems",
+                                 "No one else to take care of other siblings",
+                                 "Rejected by programme",
+                                 "Other parents' children have been rejected",
+                                 "Husband refused",
+                                 "Though necessary to be enrolled in hospital first",
+                                 "Does not think programme can help children",
+                                 "Got diarrhoea from RUTF",
+                                 "Ration has worms",
+                                 "Out of stock",
+                                 "Lack of money to pay for transport",
+                                 "SAM case in SFP"))
 
 x <- x[x$count != 0, ]
 
@@ -1934,26 +1963,28 @@ baselineGM <- ggplot(data = x, aes(x = reorder(indicator, -count), y = count)) +
 x <- colSums(cmamDF[cmamDF$cid == 1, c("q2", "q3", paste("q4", letters[1:18], sep = ""))])
 x <- data.frame(county = "Greater Monrovia", indicator = row.names(data.frame(x)), count = x)
 
-x$indicator <- factor(x = x$indicator, labels = c("Mother/carer does not think child is too small/thin",
-              "Mother/carer does not know of any treatment",
-              "Came to health centre but was not measured",
-              "Too far",
-              "No time/too busy",
-              "Mother/carer is sick",
-              "Cannot carry more than one child",
-              "Feels ashamed about coming",
-              "Security problems",
-              "No one else to take care of other siblings",
-              "Rejected by programme",
-              "Other parents' children have been rejected",
-              "Husband refused",
-              "Though necessary to be enrolled in hospital first",
-              "Does not think programme can help children",
-              "Got diarrhoea from RUTF",
-              "Ration has worms",
-              "Out of stock",
-              "Lack of money to pay for transport",
-              "SAM case in SFP"))
+x$indicator <- factor(x = x$indicator, 
+                      levels = c("q2", "q3", paste("q4", letters[1:18], sep = "")),
+                      labels = c("Mother/carer does not think child is too small/thin",
+                                 "Mother/carer does not know of any treatment",
+                                 "Came to health centre but was not measured",
+                                 "Too far",
+                                 "No time/too busy",
+                                 "Mother/carer is sick",
+                                 "Cannot carry more than one child",
+                                 "Feels ashamed about coming",
+                                 "Security problems",
+                                 "No one else to take care of other siblings",
+                                 "Rejected by programme",
+                                 "Other parents' children have been rejected",
+                                 "Husband refused",
+                                 "Though necessary to be enrolled in hospital first",
+                                 "Does not think programme can help children",
+                                 "Got diarrhoea from RUTF",
+                                 "Ration has worms",
+                                 "Out of stock",
+                                 "Lack of money to pay for transport",
+                                 "SAM case in SFP"))
 
 x <- x[x$count != 0, ]
 
@@ -1965,26 +1996,28 @@ endlineGM <- ggplot(data = x, aes(x = reorder(indicator, -count), y = count)) +
   themeSettings
 
 x <- barriersEst[barriersEst$indicator %in% c("q2", "q3", paste("q4a.q4", letters[1:18], sep = "")) & barriersEst$county == "Grand Bassa", ]
-x$indicator <- factor(x = x$indicator, labels = c("Mother/carer does not think child is too small/thin",
-              "Mother/carer does not know of any treatment",
-              "Came to health centre but was not measured",
-              "Too far",
-              "No time/too busy",
-              "Mother/carer is sick",
-              "Cannot carry more than one child",
-              "Feels ashamed about coming",
-              "Security problems",
-              "No one else to take care of other siblings",
-              "Rejected by programme",
-              "Other parents' children have been rejected",
-              "Husband refused",
-              "Though necessary to be enrolled in hospital first",
-              "Does not think programme can help children",
-              "Got diarrhoea from RUTF",
-              "Ration has worms",
-              "Out of stock",
-              "Lack of money to pay for transport",
-              "SAM case in SFP"))
+x$indicator <- factor(x = x$indicator, 
+                      levels = c("q2", "q3", paste("q4a.q4", letters[1:18], sep = "")),
+                      labels = c("Mother/carer does not think child is too small/thin",
+                                 "Mother/carer does not know of any treatment",
+                                 "Came to health centre but was not measured",
+                                 "Too far",
+                                 "No time/too busy",
+                                 "Mother/carer is sick",
+                                 "Cannot carry more than one child",
+                                 "Feels ashamed about coming",
+                                 "Security problems",
+                                 "No one else to take care of other siblings",
+                                 "Rejected by programme",
+                                 "Other parents' children have been rejected",
+                                 "Husband refused",
+                                 "Though necessary to be enrolled in hospital first",
+                                 "Does not think programme can help children",
+                                 "Got diarrhoea from RUTF",
+                                 "Ration has worms",
+                                 "Out of stock",
+                                 "Lack of money to pay for transport",
+                                 "SAM case in SFP"))
 
 x <- x[x$count != 0, ]
 
@@ -1998,26 +2031,28 @@ baselineGB <- ggplot(data = x, aes(x = reorder(indicator, -count), y = count)) +
 x <- colSums(cmamDF[cmamDF$cid == 2, c("q2", "q3", paste("q4", letters[1:18], sep = ""))])
 x <- data.frame(county = "Grand Bassa", indicator = row.names(data.frame(x)), count = x)
 
-x$indicator <- factor(x = x$indicator, labels = c("Mother/carer does not think child is too small/thin",
-              "Mother/carer does not know of any treatment",
-              "Came to health centre but was not measured",
-              "Too far",
-              "No time/too busy",
-              "Mother/carer is sick",
-              "Cannot carry more than one child",
-              "Feels ashamed about coming",
-              "Security problems",
-              "No one else to take care of other siblings",
-              "Rejected by programme",
-              "Other parents' children have been rejected",
-              "Husband refused",
-              "Though necessary to be enrolled in hospital first",
-              "Does not think programme can help children",
-              "Got diarrhoea from RUTF",
-              "Ration has worms",
-              "Out of stock",
-              "Lack of money to pay for transport",
-              "SAM case in SFP"))
+x$indicator <- factor(x = x$indicator, 
+                      levels = c("q2", "q3", paste("q4", letters[1:18], sep = "")),
+                      labels = c("Mother/carer does not think child is too small/thin",
+                                 "Mother/carer does not know of any treatment",
+                                 "Came to health centre but was not measured",
+                                 "Too far",
+                                 "No time/too busy",
+                                 "Mother/carer is sick",
+                                 "Cannot carry more than one child",
+                                 "Feels ashamed about coming",
+                                 "Security problems",
+                                 "No one else to take care of other siblings",
+                                 "Rejected by programme",
+                                 "Other parents' children have been rejected",
+                                 "Husband refused",
+                                 "Though necessary to be enrolled in hospital first",
+                                 "Does not think programme can help children",
+                                 "Got diarrhoea from RUTF",
+                                 "Ration has worms",
+                                 "Out of stock",
+                                 "Lack of money to pay for transport",
+                                 "SAM case in SFP"))
 
 x <- x[x$count != 0, ]
 
@@ -2081,7 +2116,7 @@ Long-standing programmes such as IFA supplementation, IYCF counselling and vitam
 
 For IFA supplementation, the programme has been able to reach most mothers and has been successful in getting them to take IFA supplements. However, the key challenge for the programme is **compliance** - to keep mothers taking the tablets for the recommended period of time. Since the survey did not collect data on mother's reasons for stopping IFA tablet consumption, it would be a good first step for the factors for stopping IFA tablet consumption be investigated with the results used as the basis for further counselling and education provided for pregnant women during ANC. Given that contact with health care services during pregnancy is high, it would be good to review existing guidance provided through ANC regarding the intake of IFA and to see whether relevant and appropriate information that addresses pregnant women's reasons for stopping are clarified and addressed.
 
-For IYCF counselling, coverage of the counselling activities is high. It would now be important to assess the next level in the coverage hierarchy of whether mothers practice what they have been taught or what they have learned. The most straightforward way of doing so would be assessing IYCF practices as these are the key behaviours that are targeted by the counselling. If this was to be considered, however, UNICEF and its partners would have to take into account the fact that current standard IYCF indicators can only be assessed through big sample surveys such as DHS and MICS. Yet these surveys would most likely not provide the same level of detail and information as the current assessment. There are, however, small sample alternatives to the standard IYCF indicators such as the Infant and Child Feeding Index (ICFI) indicator set which can be considered for use in routine monitoring of IYCF practices [@Guevarra:2016uw].
+For IYCF counselling, coverage of the counselling activities is high and even increased at endline. Lack of awareness of IYCF counselling which as reported as the main reason for non-coverage at baseline seems to have been addressed and is the most likely reason for the increase in coverage. At endline, the reasons for non-coverage are mainly lack of interest and lack of time which stakeholders of the programme will have to address to maintain the current level of coverage and even further improve it. Timing of when IYCF counselling is provided will have to be considered both in terms of when it is done and for how long. The current delivery model uses the mother's health visit as the point of contact for IYCF counselling. Those that don't have time and lack interest are mothers who most likely do not come to the health facility in the first place. Modalities of delivering IYCF counselling closer to where mothers live may be considered and the length of counselling sessions adapted in that they can be made shorter but number of IYCF counselling sessions increased. In this context of high coverage of IYCF counselling, it would now be important to assess the next level in the coverage hierarchy of whether mothers practice what they have been taught or what they have learned. The most straightforward way of doing so would be assessing IYCF practices as these are the key behaviours that are targeted by the counselling. If this was to be considered, however, UNICEF and its partners would have to take into account the fact that current standard IYCF indicators can only be assessed through big sample surveys such as DHS and MICS. Yet these surveys would most likely not provide the same level of detail and information as the current assessment. There are, however, small sample alternatives to the standard IYCF indicators such as the Infant and Child Feeding Index (ICFI) indicator set which can be considered for use in routine monitoring of IYCF practices [@Guevarra:2016uw].
 
 For vitamin A supplementation, the current figures are relatively lower than the expected indirect coverage estimates produced by government through the routine data collected through the Health Management Information System (HMIS). As always, it is important to recognise the limitations of indirect coverage estimates and to assess what the potential reasons for this disparity are. In addition, given that vitamin A supplementation is generally delivered in twice yearly campaigns alongside vaccinations, it would be important to ensure the availability of vitamin A and optimise the synergies between vitamin A supplementation and vaccination given that availability of vitamin A and access to vaccination has been cited as a common reason for non-coverage to vitamin A. 
 
