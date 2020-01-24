@@ -1,3 +1,7 @@
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames*,x11names*}{xcolor}
+%
 \documentclass[12pt,a4paper]{article}
 \usepackage{lmodern}
 \usepackage{amssymb,amsmath}
@@ -6,35 +10,39 @@
 \ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
 \else % if luatex or xelatex
-  \ifxetex
-    \usepackage{mathspec}
-  \else
-    \usepackage{fontspec}
-  \fi
+  \usepackage{unicode-math}
   \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \fi
 % use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 % use microtype if available
 \IfFileExists{microtype.sty}{%
-\usepackage{microtype}
+\usepackage[]{microtype}
 \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage[margin=2cm]{geometry}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{xcolor}
 \usepackage{hyperref}
-\PassOptionsToPackage{usenames,dvipsnames}{color} % color is loaded by hyperref
-\hypersetup{unicode=true,
+\hypersetup{
             pdftitle={Report on Coverage Assessment of Direct Nutrition Interventions in Liberia},
             colorlinks=true,
             linkcolor=blue,
+            filecolor=Maroon,
             citecolor=blue,
             urlcolor=blue,
             breaklinks=true}
 \urlstyle{same}  % don't use monospace font for urls
-\usepackage{natbib}
-\bibliographystyle{plainnat}
+\usepackage[margin=2cm]{geometry}
 \usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{longtable}}{}
 \usepackage{graphicx,grffile}
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
@@ -44,12 +52,6 @@
 % margins by default, and it is still possible to overwrite the defaults
 % using explicit options in \includegraphics[width, height, ...]{}
 \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
-\IfFileExists{parskip.sty}{%
-\usepackage{parskip}
-}{% else
-\setlength{\parindent}{0pt}
-\setlength{\parskip}{6pt plus 2pt minus 1pt}
-}
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -64,35 +66,22 @@
 \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
 \fi
 
-%%% Use protect on footnotes to avoid problems with footnotes in titles
-\let\rmarkdownfootnote\footnote%
-\def\footnote{\protect\rmarkdownfootnote}
-
-%%% Change title format to be more compact
-\usepackage{titling}
-
-% Create subtitle command for use in maketitle
-\providecommand{\subtitle}[1]{
-  \posttitle{
-    \begin{center}\large#1\end{center}
-    }
-}
-
-\setlength{\droptitle}{-2em}
-
-  \title{Report on Coverage Assessment of Direct Nutrition Interventions in Liberia}
-    \pretitle{\vspace{\droptitle}\centering\huge}
-  \posttitle{\par}
-    \author{}
-    \preauthor{}\postauthor{}
-      \predate{\centering\large\emph}
-  \postdate{\par}
-    \date{29 November 2019}
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
 
 \usepackage{booktabs}
-\usepackage[table]{xcolor}
-\usepackage{color}
-\usepackage{tcolorbox}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
 \usepackage{float}
 \usepackage{setspace}
 \usepackage{longtable}
@@ -126,6 +115,12 @@
 \usepackage[normalem]{ulem}
 \usepackage{makecell}
 \usepackage{xcolor}
+\usepackage[]{natbib}
+\bibliographystyle{plainnat}
+
+\title{Report on Coverage Assessment of Direct Nutrition Interventions in Liberia}
+\author{}
+\date{\vspace{-2.5em}24 January 2020}
 
 \begin{document}
 \maketitle
@@ -135,7 +130,7 @@
 \pagenumbering{arabic}
 
 {
-\hypersetup{linkcolor=black}
+\hypersetup{linkcolor=}
 \setcounter{tocdepth}{3}
 \tableofcontents
 }
@@ -951,7 +946,7 @@ For vitamin A supplementation, the current figures are relatively lower than the
 
 Programmes such as MNP and CMAM, on the other hand, show how new and recently scaled-up programmes are still in the process of achieving the highest levels of coverage possible. MNP supplementation which is the newest programme of those assessed is understandably still struggling with coverage even at endline. Knowledge of the programme and knowledge of how the programme works and its importance for children's health and nutrition is the key falter point which is typical of a programme at this stage of its evolution. However, available evidence on similar programmes providing complementary feeding supplements show a much higher awareness and contact coverage at a minimum 1 year after start of programme implementation \citep{Aaron:2016cv} and typically falters at the effectiveness coverage level. This difference in coverage to other similar programmes elsewhere can be linked to the way the programme in Liberia is being implemented. The programme is mainly anchored to the health centre and therefore knowledge and access to it is primarily influenced by mothers' behaviours and attitudes towards seeking care and treatment at the health facility. Given that MNP is aimed at children who are otherwise healthy (not acute malnourished), the current MNP coverage estimates indicate that health-seeking behaviour leading to a visit to a health facility is mainly influenced by whether their children are sick rather than as a way to seek information or participate in promotive and preventive services such as MNP supplementation. Other factors include physical access to health centres. A more community-based approach to MNP supplementation that is integrated with other community-based programmes such as vaccinations and CMAM should be considered as a potential delivery mechanism. Screening of children using MUAC can be integrated into vaccination campaigns and children under 2 years old identified as not being acutely malnourished are informed about MNP supplementation programme and ideally provided with the MNP supplements at point of contact. These efforts should be coupled with clear behavioural change communication messages on the importance of complementary feeding and how the MNP supplement contributes to the increased quality of complementary feeding with the aim of creating demand for MNP amongst the programme's target beneficiary. Finally, information on access to the programme providing MNP including eligibility criteria and locations where they can receive the MNP should be explained clearly to the potential beneficiaries.
 
-Finally, for CMAM the coverage estimates at baseline and endline indicate 1) disparity between Greater Monrovia and Grand Bassa in terms of the level and intensity of the community aspects of the programme; 2) significant drop in coverage of CMAM in Greater Monrovia given that at baseline its coverage was exemplary for an urban CMAM programme; and, 3) no significant change in coverage of CMAM in Grand Bassa with coverage still remaining unacceptably low. At baseline, screening and case-finding in Greater Monrovia is better than in Grand Bassa and this can partly explain the difference in treatment coverage between the two areas at baseline. At endline, no improvement in screening has happened and the levels of coverage for CMAM has significantly plummeted. Given that screening has remained extremely low at endline compared to baseline in both survey areas, other factors should be looked into for the cause of this significant decline in coverage in Greater Monrovia and the stagnant coverage in Grand Bassa. Review of previous CMAM coverage assessment conducted in Greater Monrovia by Action Against Hunger in 2011 \citep{AccionContralaFaim:2011vu} reveal that despite the reported 48.6\% period coverage, a relatively high figure for most CMAM programmes particularly for a programme that is being implemented in an urban area, several barriers to coverage were identified the most common of which was awareness of the programme, its services and intended beneficiaries. This was the same key factor elicited in the baseline (where treatment coverage was at 55\%) and endline (where treatment coverage dropped to 27\%) of the Liberia coverage assessment. With all these factors of screening and awareness being constant since the early stages of the CMAM programme in Liberia, a more basic reason for the significant decrease in coverage in Greater Monrovia is likely. Based on feedback by stakeholders, the CMAM programme in Greater Monrovia has been mainly implemented by government in the past year without the usual support from other stakeholders. The possible effect of this on coverage is more on the day-to-day implementation of the programme particularly with case admission and management. It is recommended that a more nuanced investigation into the CMAM implementation be done in both Greater Monrovia and Grand Bassa. Specifically, an analysis of routine programme monitoring data should be done for as far back as data is available to assess the following:
+For CMAM, the coverage estimates at baseline and endline indicate 1) disparity between Greater Monrovia and Grand Bassa in terms of the level and intensity of the community aspects of the programme; 2) significant drop in coverage of CMAM in Greater Monrovia given that at baseline its coverage was exemplary for an urban CMAM programme; and, 3) no significant change in coverage of CMAM in Grand Bassa with coverage still remaining unacceptably low. At baseline, screening and case-finding in Greater Monrovia is better than in Grand Bassa and this can partly explain the difference in treatment coverage between the two areas at baseline. At endline, no improvement in screening has happened and the levels of coverage for CMAM has significantly plummeted. Given that screening has remained extremely low at endline compared to baseline in both survey areas, other factors should be looked into for the cause of this significant decline in coverage in Greater Monrovia and the stagnant coverage in Grand Bassa. Review of previous CMAM coverage assessment conducted in Greater Monrovia by Action Against Hunger in 2011 \citep{AccionContralaFaim:2011vu} reveal that despite the reported 48.6\% period coverage, a relatively high figure for most CMAM programmes particularly for a programme that is being implemented in an urban area, several barriers to coverage were identified the most common of which was awareness of the programme, its services and intended beneficiaries. This was the same key factor elicited in the baseline (where treatment coverage was at 55\%) and endline (where treatment coverage dropped to 27\%) of the Liberia coverage assessment. With all these factors of screening and awareness being constant since the early stages of the CMAM programme in Liberia, a more basic reason for the significant decrease in coverage in Greater Monrovia is likely. Based on feedback by stakeholders, the CMAM programme in Greater Monrovia has been mainly implemented by government in the past year without the usual support from other stakeholders. The possible effect of this on coverage is more on the day-to-day implementation of the programme particularly with case admission and management. It is recommended that a more nuanced investigation into the CMAM implementation be done in both Greater Monrovia and Grand Bassa. Specifically, an analysis of routine programme monitoring data should be done for as far back as data is available to assess the following:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -962,6 +957,10 @@ Finally, for CMAM the coverage estimates at baseline and endline indicate 1) dis
 \end{enumerate}
 
 Based on results of this in-depth investigation, appropriate remedial actions should be done to emphasise CMAM treatment protocols prescribed in the newly formulated CMAM guidelines for Liberia. In addition, screening coverage will need to be increased so as to find cases early and get them treated early and quickly.
+
+Finally, some limitations need to be considered and potentially addressed in future coverage assessments of these indicators. Whilst using the Tanahashi hierarchical model is a useful evaluation and audit framework for coverage, its usefulness is dependent on appropriate and measurable indicators that can assess the higher rungs of the model. We have been able to exemplify in the IFA supplementation indicators how a fully specified coverage indicator set allows for meaningful diagnosis of where this programme is faltering at. This is particularly signficant for IFA supplementation given that the lower order coverage indicators show high estimates and by themselves would not have been informative. With the higher order coverage indicators specified, it becomes clear that the improvement in the programme is in ensuring that pregnant women are compliant to the IFA supplementation regime.
+
+Having a similar set of hierarchical coverage indicators for IYCF counselling would have been valuable as well given that coverage of the programme as proxied by knowledge of and participation in IYCF counselling is relatively high in both survey areas. Whilst there is information to work with to further improve these lower level coverage indicators, higher order coverage indicators that can proxy acceptability of the IYCF counselling and effectiveness of IYCF counselling would have been valuable in further improving both the content and the mechnics of the IYCF counselling programme. This will however require development and testing of indicators that would be appropriate and measurable to assess these concepts. The same approach will be needed for vitamin A supplementation coverage indicators as the currently used standard indicator only assesses contact coverage and not any other higher order coverage metrics such as appropriate dosing. For MNP, these higher order coverage metrics will be required at some point but given that lower order coverage indicators show quite low levels, it will be important to first address the issues identified with regard to availability and access first and improve on this while developing the measures needed for the higher level coverage metrics. CMAM, on the other hand, has built in higher order coverage metrics of up to effectiveness coverage which takes into account the programme's performance indicators. Hence, the key focus for CMAM is to rectify the issues that have caused the programme to significantly falter in their coverage levels.
 
 \newpage
 
@@ -999,6 +998,5 @@ For the survey for children 6-59 months, following is a sample/template question
 
 \renewcommand\refname{References}
 \bibliography{bibliography.bib}
-
 
 \end{document}
